@@ -1,0 +1,194 @@
+id: update-orders
+type: page_header_menu
+properties:
+  title: Update Orders
+actions:
+  onEnter:
+    - id: fetch_last_api_call
+      type: fetch()
+      params: last_api_call
+    - id: set_last_api_call
+      type: set()
+      params: 
+        last_api_call:
+          _request: last_api_call
+        fetched: false
+requests:
+  - id: last_api_call
+    type: mongodb_aggregation
+    connectionId: api_calls_mdb
+    properties:
+      pipeline:
+        - $sort:
+            timestamp: -1
+        - $limit: 1
+        - $project:
+            _id: 0
+            timestamp: 1
+            page_info:
+              $regexFind:
+                input: $headers.link
+                regex: <https:\/\/.*\.com\/admin\/api\/2020-01\/orders\.json\?limit=.*&page_info=(.*)>;
+        - $addFields:
+            page_info:
+              $arrayElemAt:
+                - $page_info.captures
+                - 0
+        - $addFields:
+            now: 
+              _date: now
+            page:
+              $and:
+                # issue with _date: now, mongo sees as a string
+                # - $lt:
+                #     - $subtract:
+                #         - _date: now
+                #         - $timestamp
+                #     - 300000
+                - $ne:
+                    - $page_info
+                    - null
+                
+
+
+mutations:
+  - id: get_orders
+    type: axios_http
+    connectionId: shopify_orders
+    properties:
+      params:
+        _if:
+          test:
+            _eq:
+              - _state: last_api_call.0.page
+              - true
+          then:
+            limit: 250
+            page_info:
+              _state: last_api_call.0.page_info
+          else:
+            limit: 250
+            status: any
+
+  - id: insert_data
+    type: mongodb_insert_many
+    connectionId: orders_temp_mdb
+    properties:
+      docs:
+        _state: data 
+  - id: transform_data
+    type: mongodb_aggregation
+    connectionId: orders_temp_mdb
+    properties:
+      pipeline:
+        - $addFields:
+            _id: '$id'
+            closed_at:
+              $dateFromString: 
+                dateString: $closed_at
+                format: '%Y-%m-%dT%H:%M:%S%z'
+            created_at:
+              $dateFromString: 
+                dateString: $created_at
+                format: '%Y-%m-%dT%H:%M:%S%z'
+            updated_at:
+              $dateFromString: 
+                dateString: $updated_at
+                format: '%Y-%m-%dT%H:%M:%S%z'
+            cancelled_at:
+              $dateFromString: 
+                dateString: $updated_at
+                format: '%Y-%m-%dT%H:%M:%S%z'
+
+        - $merge: 
+            into: orders
+  - id: clear_temp_collection
+    type: mongodb_aggregation
+    connectionId: orders_temp_mdb
+    properties:
+      pipeline:
+        # this is hacky yes
+        - $match:
+            sandaklncmnasklmz: ncakdjcnaskmxz
+        - $out: orders_temp
+  - id: insert_api_call
+    type: mongodb_insert_one
+    connectionId: api_calls_mdb
+    properties:
+      doc:
+        headers:
+          _state: headers
+        timestamp:
+          _date: now
+        params:
+          _if:
+            test:
+              _eq:
+               - _state: last_api_call.0.page
+               - true
+            then:
+              limit: 50
+              page_info:
+                _state: last_api_call.0.page_info
+            else:
+              limit: 50
+              status: any
+
+
+blocks:
+  - id: stuff
+    type: paragraph
+    properties:
+      content:
+
+  - id: content
+    type: card
+    blocks:
+
+      - id: button
+        type: button
+        properties:
+          disable:
+            _and:
+              - _state: fetched
+              - _not:
+                  _state: page
+        actions:
+          onClick:
+            - id: get_orders
+              type: mutate()
+              params: get_orders
+            - id: set
+              type: set()
+              params:
+                data:
+                  _get:
+                    key: 'data.orders'
+                    on:
+                      _mutation: get_orders
+                headers:
+                  _get:
+                    key: 'headers'
+                    on:
+                      _mutation: get_orders
+            - id: insert_data
+              type: mutate()
+              params: insert_data
+            - id: transform_data
+              type: mutate()
+              params: transform_data
+            - id: clear_temp_collection
+              type: mutate()
+              params: clear_temp_collection
+            - id: insert_api_call
+              type: mutate()
+              params: insert_api_call  
+            - id: fetch_last_api_call
+              type: fetch()
+              params: last_api_call
+            - id: set_last_api_call
+              type: set()
+              params: 
+                fetched: true
+                last_api_call:
+                  _request: last_api_call

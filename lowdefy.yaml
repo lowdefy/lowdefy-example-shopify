@@ -1,0 +1,70 @@
+config:
+  auth:
+    createUsers: 'sign_up'
+  publicHomePageId: welcome
+  authHomePageId: welcome
+
+connections:
+  - id: orders_mdb
+    type: mongodb_collection
+    properties:
+      databaseUri:
+        _secret: shopify_mdb
+      databaseName: shopify
+      collection: orders
+      read: true
+      write: true
+
+  - id: orders_temp_mdb
+    type: mongodb_collection
+    properties:
+      databaseUri:
+        _secret: shopify_mdb
+      databaseName: shopify
+      collection: orders_temp
+      read: true
+      write: true
+
+  - id: api_calls_mdb
+    type: mongodb_collection
+    properties:
+      databaseUri:
+        _secret: shopify_mdb
+      databaseName: shopify
+      collection: api_calls
+      read: true
+      write: true
+
+  - id: shopify_orders
+    type: axios_http
+    properties:
+      url: /admin/api/2020-01/orders.json
+      method: get
+      baseURL:
+        _secret: shopify_api_url
+      auth:
+        _secret: shopify_api_auth
+
+menus: 
+  - id: default
+    links:
+      - id: admin_group
+        type: menu_group
+        properties:
+          title: Admin
+          icon: control
+        links:
+          - id: update_orders
+            type: menu_link
+            pageId: update-orders
+            properties:
+              title: Update Orders
+      - id: profile
+        type: menu_link
+        pageId: profile
+        properties:
+          title: Profile
+          icon: user
+pages:
+  - _ref: welcome.yaml
+  - _ref: api/update-orders.yaml

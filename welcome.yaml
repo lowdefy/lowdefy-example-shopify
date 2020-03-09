@@ -1,0 +1,19 @@
+id: welcome
+type: page_header_menu
+public: true
+properties:
+  title: welcome
+blocks:
+  - id: Login
+    type: button
+    properties:
+      title: Login
+      hideActionLoading: true
+    visible:
+      _eq:
+        - _user: true
+        - null
+    actions: 
+      onClick:
+        - id: login
+          type: login()
