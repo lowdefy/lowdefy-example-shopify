@@ -45,9 +45,23 @@ connections:
       auth:
         _secret: shopify_api_auth
 
+  - id: shopify_orders_count
+    type: axios_http
+    properties:
+      url: /admin/api/2020-01/orders/count.json
+      method: get
+      baseURL:
+        _secret: shopify_api_url
+      auth:
+        _secret: shopify_api_auth
+      params:
+        status: any
+
 menus: 
   - id: default
     links:
+          title: Dashboard
+          icon: pie-chart
       - id: admin_group
         type: menu_group
         properties:

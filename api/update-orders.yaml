@@ -2,6 +2,10 @@ id: update-orders
 type: page_header_menu
 properties:
   title: Update Orders
+  breadcrumb:
+   list:
+    - Admin
+    - Update Orders
 actions:
   onEnter:
     - id: set_initial
@@ -51,6 +55,8 @@ requests:
                   _id: 0
                   max_id:
                     $max: $_id
+                  count:
+                    $sum: 1
             as: orders
         - $unwind:
             path: $orders
@@ -61,6 +67,7 @@ requests:
                 date: $timestamp
             initial: 1
             page_info: 1
+            count: $orders.count
             max_id:
               $ifNull:
                 - $orders.max_id
@@ -72,6 +79,11 @@ requests:
                 - $ne:
                     - $page_info
                     - null
+
+  - id: get_orders_count
+    type: axios_http
+    connectionId: shopify_orders_count
+    properties: {}
 
 mutations:
   - id: get_orders
@@ -102,6 +114,10 @@ mutations:
                 else:
                   _state: api_info.max_id
 
+  - id: get_orders_count
+    type: axios_http
+    connectionId: shopify_orders_count
+    properties: {}
 
   - id: insert_data
     type: mongodb_insert_many
@@ -164,11 +180,11 @@ mutations:
                 - _state: api_info.page
                 - true
             then:
-              limit: 10
+              limit: 250
               page_info:
                 _state: api_info.page_info
             else:
-              limit: 10
+              limit: 250
               status: any
               since_id:
                 _if:
@@ -180,19 +196,33 @@ mutations:
                     1
                   else:
                     _state: api_info.max_id
-
-
 blocks:
   - id: content
     type: card
     blocks:
+      - id: title
+        type: title
+        properties:
+          content: Fetch Orders by ID
+          level: 3
       - id: description
         type: descriptions
         properties:
+          column: 1
           items:
             - label: Last Fetched
               value:
                 _state: api_info.last_fetched
+            - label: Shopify Orders
+              value:
+                _get:
+                    key: 'data.count'
+                    on:
+                      _request: get_orders_count
+            - label: Database Orders
+              value:
+                _state: api_info.count
+
       - id: fetch
         type: button
         properties:
@@ -202,11 +232,7 @@ blocks:
               - _not:
                   _state: initial
               - _not:
-                  _state: api_info.page
-
-                
-                
-                
+                  _state: api_info.page                
         actions:
           onClick:
             - id: get_orders
