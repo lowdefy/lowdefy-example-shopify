@@ -1,0 +1,45 @@
+- $sort:
+    timestamp: -1
+- $limit: 1
+- $project:
+    _id: 0
+    timestamp: 1
+    initial:
+      $literal: false
+    page_info:
+      $regexFind:
+        input: $headers.link
+        regex: >-
+          <https://.*.com/admin/api/2020-01/orders.json?limit=.*&page_info=(.*)>;
+          rel="next"
+- $addFields:
+    page_info:
+      $arrayElemAt:
+        - $page_info.captures
+        - 0
+- $lookup:
+    from: orders
+    let: {}
+    pipeline:
+      - $group:
+          _id: 0
+          max_id:
+            $max: $_id
+    as: orders
+- $unwind:
+    path: $orders
+    preserveNullAndEmptyArrays: true
+- $project:
+    initial: 1
+    page_info: 1
+    max_id:
+      $ifNull:
+        - $orders.max_id
+        - 1
+    page:
+      $and:
+        - $not:
+            - $initial
+        - $ne:
+            - $page_info
+            - null

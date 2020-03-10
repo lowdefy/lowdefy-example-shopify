@@ -4,17 +4,23 @@ properties:
   title: Update Orders
 actions:
   onEnter:
-    - id: fetch_last_api_call
-      type: fetch()
-      params: last_api_call
-    - id: set_last_api_call
+    - id: set_initial
       type: set()
       params: 
-        last_api_call:
-          _request: last_api_call
-        fetched: false
+        initial: true
+    - id: fetch_api_info
+      type: fetch()
+      params: api_info
+    - id: set_api_info
+      type: set()
+      params:
+        api_info:
+          _get:
+            key: '0'
+            on:
+              _request: api_info
 requests:
-  - id: last_api_call
+  - id: api_info
     type: mongodb_aggregation
     connectionId: api_calls_mdb
     properties:
@@ -25,31 +31,47 @@ requests:
         - $project:
             _id: 0
             timestamp: 1
+            initial:
+              $literal:
+                _state: initial
             page_info:
               $regexFind:
                 input: $headers.link
-                regex: <https:\/\/.*\.com\/admin\/api\/2020-01\/orders\.json\?limit=.*&page_info=(.*)>;
+                regex: <https:\/\/.*\.com\/admin\/api\/2020-01\/orders\.json\?limit=.*&page_info=(.*)>; rel="next"
         - $addFields:
             page_info:
               $arrayElemAt:
                 - $page_info.captures
                 - 0
-        - $addFields:
-            now: 
-              _date: now
+        - $lookup:
+            from: orders
+            let: {}
+            pipeline:
+              - $group:
+                  _id: 0
+                  max_id:
+                    $max: $_id
+            as: orders
+        - $unwind:
+            path: $orders
+            preserveNullAndEmptyArrays: true
+        - $project:
+            last_fetched:
+              $dateToString:
+                date: $timestamp
+            initial: 1
+            page_info: 1
+            max_id:
+              $ifNull:
+                - $orders.max_id
+                - 1
             page:
               $and:
-                # issue with _date: now, mongo sees as a string
-                # - $lt:
-                #     - $subtract:
-                #         - _date: now
-                #         - $timestamp
-                #     - 300000
+                - $not:
+                    - $initial
                 - $ne:
                     - $page_info
                     - null
-                
-
 
 mutations:
   - id: get_orders
@@ -60,15 +82,26 @@ mutations:
         _if:
           test:
             _eq:
-              - _state: last_api_call.0.page
+              - _state: api_info.page
               - true
           then:
             limit: 250
             page_info:
-              _state: last_api_call.0.page_info
+              _state: api_info.page_info
           else:
             limit: 250
             status: any
+            since_id:
+              _if:
+                test:
+                  _eq:
+                    - _state: api_info
+                    - null
+                then:
+                  1
+                else:
+                  _state: api_info.max_id
+
 
   - id: insert_data
     type: mongodb_insert_many
@@ -83,25 +116,26 @@ mutations:
       pipeline:
         - $addFields:
             _id: '$id'
-            closed_at:
+            closed_at_date:
               $dateFromString: 
                 dateString: $closed_at
                 format: '%Y-%m-%dT%H:%M:%S%z'
-            created_at:
+            created_at_date:
               $dateFromString: 
                 dateString: $created_at
                 format: '%Y-%m-%dT%H:%M:%S%z'
-            updated_at:
+            updated_at: 1
+            updated_at_date:
               $dateFromString: 
                 dateString: $updated_at
                 format: '%Y-%m-%dT%H:%M:%S%z'
-            cancelled_at:
+            cancelled_at_date:
               $dateFromString: 
-                dateString: $updated_at
+                dateString: $cancelled_at_at
                 format: '%Y-%m-%dT%H:%M:%S%z'
-
         - $merge: 
             into: orders
+
   - id: clear_temp_collection
     type: mongodb_aggregation
     connectionId: orders_temp_mdb
@@ -111,6 +145,7 @@ mutations:
         - $match:
             sandaklncmnasklmz: ncakdjcnaskmxz
         - $out: orders_temp
+
   - id: insert_api_call
     type: mongodb_insert_one
     connectionId: api_calls_mdb
@@ -120,39 +155,58 @@ mutations:
           _state: headers
         timestamp:
           _date: now
+        api_info:
+          _state: api_info
         params:
           _if:
             test:
               _eq:
-               - _state: last_api_call.0.page
-               - true
+                - _state: api_info.page
+                - true
             then:
-              limit: 50
+              limit: 10
               page_info:
-                _state: last_api_call.0.page_info
+                _state: api_info.page_info
             else:
-              limit: 50
+              limit: 10
               status: any
+              since_id:
+                _if:
+                  test:
+                    _eq:
+                      - _state: api_info
+                      - null
+                  then:
+                    1
+                  else:
+                    _state: api_info.max_id
 
 
 blocks:
-  - id: stuff
-    type: paragraph
-    properties:
-      content:
-
   - id: content
     type: card
     blocks:
-
-      - id: button
+      - id: description
+        type: descriptions
+        properties:
+          items:
+            - label: Last Fetched
+              value:
+                _state: api_info.last_fetched
+      - id: fetch
         type: button
         properties:
-          disable:
+          title: Fetch
+          disabled:
             _and:
-              - _state: fetched
               - _not:
-                  _state: page
+                  _state: initial
+              - _not:
+                  _state: api_info.page
+
+                
+                
+                
         actions:
           onClick:
             - id: get_orders
@@ -183,12 +237,18 @@ blocks:
             - id: insert_api_call
               type: mutate()
               params: insert_api_call  
-            - id: fetch_last_api_call
-              type: fetch()
-              params: last_api_call
-            - id: set_last_api_call
+            - id: set_initial
               type: set()
               params: 
-                fetched: true
-                last_api_call:
-                  _request: last_api_call
+                initial: false
+            - id: fetch_api_info
+              type: fetch()
+              params: api_info
+            - id: set_api_info
+              type: set()
+              params: 
+                api_info:
+                  _get:
+                    key: '0'
+                    on:
+                      _request: api_info
