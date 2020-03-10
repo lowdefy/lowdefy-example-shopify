@@ -1,0 +1,31 @@
+id: init
+type: mongodb_aggregation
+connectionId: orders_mdb
+properties:
+  pipeline:
+    - $match:
+        test: false
+    - $group:
+        _id: 0
+        min_created_at:
+          $min: $created_at_date
+        max_created_at:
+          $max: $created_at_date
+    - $project:
+        _id: 0
+        start_month:
+          $dateFromParts:
+            year:
+              $year:
+                $min_created_at
+            month:
+              $month:
+                $min_created_at
+        end_month:
+          $dateFromParts:
+            year:
+              $year:
+                $max_created_at
+            month:
+              $month:
+                $max_created_at

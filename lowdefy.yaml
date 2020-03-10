@@ -2,7 +2,7 @@ config:
   auth:
     createUsers: 'sign_up'
   publicHomePageId: welcome
-  authHomePageId: welcome
+  authHomePageId: dashboard
 
 connections:
   - id: orders_mdb
@@ -60,6 +60,10 @@ connections:
 menus: 
   - id: default
     links:
+      - id: dashboard
+        type: menu_link
+        pageId: dashboard
+        properties:
           title: Dashboard
           icon: pie-chart
       - id: admin_group
@@ -82,3 +86,4 @@ menus:
 pages:
   - _ref: welcome.yaml
   - _ref: api/update-orders.yaml
+  - _ref: dashboard/dashboard.yaml

@@ -30,6 +30,9 @@
     path: $orders
     preserveNullAndEmptyArrays: true
 - $project:
+    last_fetched:
+      $dateToString:
+        date: $timestamp
     initial: 1
     page_info: 1
     max_id:

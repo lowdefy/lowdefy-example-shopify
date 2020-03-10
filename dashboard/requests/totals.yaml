@@ -1,0 +1,42 @@
+id: totals
+type: mongodb_aggregation
+connectionId: orders_mdb
+properties:
+  pipeline:
+    - $match:
+        test: false
+    - $addFields:
+        start_month:
+          _state: start_month
+        end_month:
+          $dateFromParts:
+            year:
+              $year:
+                _state: end_month
+            month:
+              $add:
+                - $month:
+                    _state: end_month
+                - 1
+    - $match:
+        $expr:
+          $and:
+            - $gte:
+              - $created_at_date
+              - $start_month
+            - $lt:
+              - $created_at_date
+              - $end_month
+
+    - $group:
+        _id: 0
+        total_orders:
+          $sum: 1
+        total_revenue:
+          $sum:
+            $toDouble: $total_price
+        total_customers:
+          $addToSet: $email
+    - $addFields:
+        total_customers:
+          $size: $total_customers

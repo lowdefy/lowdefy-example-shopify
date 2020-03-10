@@ -114,11 +114,6 @@ mutations:
                 else:
                   _state: api_info.max_id
 
-  - id: get_orders_count
-    type: axios_http
-    connectionId: shopify_orders_count
-    properties: {}
-
   - id: insert_data
     type: mongodb_insert_many
     connectionId: orders_temp_mdb
