@@ -1,11 +1,11 @@
-id: update-orders
+id: update-products
 type: page_header_menu
 properties:
-  title: Update Orders
+  title: Update Products
   breadcrumb:
    list:
     - Admin
-    - Update Orders
+    - Update Products
 actions:
   onEnter:
     - id: set_initial
@@ -30,7 +30,7 @@ requests:
     properties:
       pipeline:
         - $match:
-            endpoint: orders
+            endpoint: products
         - $sort:
             timestamp: -1
         - $limit: 1
@@ -43,14 +43,14 @@ requests:
             page_info:
               $regexFind:
                 input: $headers.link
-                regex: <https:\/\/.*\.com\/admin\/api\/2020-01\/orders\.json\?limit=.*&page_info=(.*)>; rel="next"
+                regex: <https:\/\/.*\.com\/admin\/api\/2020-01\/products\.json\?limit=.*&page_info=(.*)>; rel="next"
         - $addFields:
             page_info:
               $arrayElemAt:
                 - $page_info.captures
                 - 0
         - $lookup:
-            from: orders
+            from: products
             let: {}
             pipeline:
               - $group:
@@ -59,9 +59,9 @@ requests:
                     $max: $_id
                   count:
                     $sum: 1
-            as: orders
+            as: products
         - $unwind:
-            path: $orders
+            path: $products
             preserveNullAndEmptyArrays: true
         - $project:
             last_fetched:
@@ -69,10 +69,10 @@ requests:
                 date: $timestamp
             initial: 1
             page_info: 1
-            count: $orders.count
+            count: $products.count
             max_id:
               $ifNull:
-                - $orders.max_id
+                - $products.max_id
                 - 1
             page:
               $and:
@@ -82,15 +82,15 @@ requests:
                     - $page_info
                     - null
 
-  - id: get_orders_count
+  - id: get_products_count
     type: axios_http
-    connectionId: shopify_orders_count
+    connectionId: shopify_products_count
     properties: {}
 
 mutations:
-  - id: get_orders
+  - id: get_products
     type: axios_http
-    connectionId: shopify_orders
+    connectionId: shopify_products
     properties:
       params:
         _if:
@@ -104,7 +104,6 @@ mutations:
               _state: api_info.page_info
           else:
             limit: 250
-            status: any
             since_id:
               _if:
                 test:
@@ -118,21 +117,17 @@ mutations:
 
   - id: insert_data
     type: mongodb_insert_many
-    connectionId: orders_temp_mdb
+    connectionId: products_temp_mdb
     properties:
       docs:
         _state: data 
   - id: transform_data
     type: mongodb_aggregation
-    connectionId: orders_temp_mdb
+    connectionId: products_temp_mdb
     properties:
       pipeline:
         - $addFields:
             _id: '$id'
-            closed_at_date:
-              $dateFromString: 
-                dateString: $closed_at
-                format: '%Y-%m-%dT%H:%M:%S%z'
             created_at_date:
               $dateFromString: 
                 dateString: $created_at
@@ -141,29 +136,29 @@ mutations:
               $dateFromString: 
                 dateString: $updated_at
                 format: '%Y-%m-%dT%H:%M:%S%z'
-            cancelled_at_date:
+            published_at_date:
               $dateFromString: 
-                dateString: $cancelled_at_at
+                dateString: $published_at
                 format: '%Y-%m-%dT%H:%M:%S%z'
         - $merge: 
-            into: orders
+            into: products
 
   - id: clear_temp_collection
     type: mongodb_aggregation
-    connectionId: orders_temp_mdb
+    connectionId: products_temp_mdb
     properties:
       pipeline:
         # this is hacky yes
         - $match:
             sandaklncmnasklmz: ncakdjcnaskmxz
-        - $out: orders_temp
+        - $out: products_temp
 
   - id: insert_api_call
     type: mongodb_insert_one
     connectionId: api_calls_mdb
     properties:
       doc:
-        endpoint: orders
+        endpoint: products
         headers:
           _state: headers
         timestamp:
@@ -200,7 +195,7 @@ blocks:
       - id: title
         type: title
         properties:
-          content: Fetch Orders by ID
+          content: Fetch Products by ID
           level: 3
       - id: description
         type: descriptions
@@ -210,13 +205,13 @@ blocks:
             - label: Last Fetched
               value:
                 _state: api_info.last_fetched
-            - label: Shopify Orders
+            - label: Shopify Products
               value:
                 _get:
                     key: 'data.count'
                     on:
-                      _request: get_orders_count
-            - label: Database Orders
+                      _request: get_products_count
+            - label: Database Products
               value:
                 _state: api_info.count
 
@@ -232,22 +227,22 @@ blocks:
                   _state: api_info.page                
         actions:
           onClick:
-            - id: get_orders
+            - id: get_products
               type: mutate()
-              params: get_orders
+              params: get_products
             - id: set
               type: set()
               params:
                 data:
                   _get:
-                    key: 'data.orders'
+                    key: 'data.products'
                     on:
-                      _mutation: get_orders
+                      _mutation: get_products
                 headers:
                   _get:
                     key: 'headers'
                     on:
-                      _mutation: get_orders
+                      _mutation: get_products
             - id: insert_data
               type: mutate()
               params: insert_data

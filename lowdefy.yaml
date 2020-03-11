@@ -5,6 +5,16 @@ config:
   authHomePageId: dashboard
 
 connections:
+  - id: api_calls_mdb
+    type: mongodb_collection
+    properties:
+      databaseUri:
+        _secret: shopify_mdb
+      databaseName: shopify
+      collection: api_calls
+      read: true
+      write: true
+
   - id: orders_mdb
     type: mongodb_collection
     properties:
@@ -22,16 +32,6 @@ connections:
         _secret: shopify_mdb
       databaseName: shopify
       collection: orders_temp
-      read: true
-      write: true
-
-  - id: api_calls_mdb
-    type: mongodb_collection
-    properties:
-      databaseUri:
-        _secret: shopify_mdb
-      databaseName: shopify
-      collection: api_calls
       read: true
       write: true
 
@@ -57,6 +57,46 @@ connections:
       params:
         status: any
 
+  - id: products_mdb
+    type: mongodb_collection
+    properties:
+      databaseUri:
+        _secret: shopify_mdb
+      databaseName: shopify
+      collection: products
+      read: true
+      write: true
+
+  - id: products_temp_mdb
+    type: mongodb_collection
+    properties:
+      databaseUri:
+        _secret: shopify_mdb
+      databaseName: shopify
+      collection: products_temp
+      read: true
+      write: true
+
+  - id: shopify_products
+    type: axios_http
+    properties:
+      url: /admin/api/2020-01/products.json
+      method: get
+      baseURL:
+        _secret: shopify_api_url
+      auth:
+        _secret: shopify_api_auth
+
+  - id: shopify_products_count
+    type: axios_http
+    properties:
+      url: /admin/api/2020-01/products/count.json
+      method: get
+      baseURL:
+        _secret: shopify_api_url
+      auth:
+        _secret: shopify_api_auth
+
 menus: 
   - id: default
     links:
@@ -77,6 +117,11 @@ menus:
             pageId: update-orders
             properties:
               title: Update Orders
+          - id: update_products
+            type: menu_link
+            pageId: update-products
+            properties:
+              title: Update Products
       - id: profile
         type: menu_link
         pageId: profile
@@ -85,5 +130,6 @@ menus:
           icon: user
 pages:
   - _ref: welcome.yaml
-  - _ref: api/update-orders.yaml
   - _ref: dashboard/dashboard.yaml
+  - _ref: api/update-orders.yaml
+  - _ref: api/update-products.yaml
