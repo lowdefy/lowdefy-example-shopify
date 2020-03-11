@@ -1,0 +1,52 @@
+id: card_day_hour_heatmap
+type: card
+box:
+  justifyItems: center
+blocks:
+  - id: day_time_title
+    type: title
+    properties:
+      content: Total Orders - Day of Week by Hour
+      level: 4
+  - id: chart_day_hour_heatmap
+    type: amcharts_4_xy
+    box:
+      maxWidth: 600
+    properties:
+      data:
+        _request: day_hour_heatmap
+      xAxes:
+        - type: CategoryAxis
+          title:
+            text: Day of Week
+          dataFields:
+            category: day
+          renderer:
+            minGridDistance: 40
+      yAxes:
+        - type: CategoryAxis
+          title:
+            text: Hour (GMT)
+          dataFields:
+            category: hour
+          renderer:
+            inversed: true
+            minGridDistance: 30
+      series:
+        - type: ColumnSeries
+          heatRules:
+            - min: "#e0f2f1"
+              max: "#00695c"
+              property: fill
+              target: columns.template
+          dataFields:
+            categoryX: day
+            categoryY: hour
+            value: total_orders
+          columns:
+            height: 100%
+            width: 100%
+            strokeWidth: 2
+            strokeOpacity: 1
+            stroke: '#ffffff'
+            tooltipText: "{day}, {hour} GMT: {total_orders} orders"

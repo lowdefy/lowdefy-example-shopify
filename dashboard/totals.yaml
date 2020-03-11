@@ -1,0 +1,43 @@
+id: card_totals
+type: card
+blocks:
+  - id: statistic_total_orders
+    type: statistic
+    box:
+      span: 4
+    properties:
+      title: Total Orders
+      suffixIcon: shopping
+      value:
+        _get:
+          key: 0.total_orders
+          on:
+            _request: totals
+      precision: 0
+  - id: statistic_total_revenue
+    type: statistic
+    box:
+      span: 4
+    properties:
+      title: Total Revenue
+      suffixIcon: bank
+      prefix: R
+      value:
+        _get:
+          key: 0.total_revenue
+          on:
+            _request: totals
+      precision: 0
+  - id: statistic_total_customers
+    type: statistic
+    box:
+      span: 4
+    properties:
+      title: Total Customers
+      suffixIcon: team
+      value:
+        _get:
+          key: 0.total_customers
+          on:
+            _request: totals
+      precision: 0

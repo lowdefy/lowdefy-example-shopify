@@ -1,4 +1,4 @@
-id: day_time_heatmap
+id: day_hour_heatmap
 type: mongodb_aggregation
 connectionId: orders_mdb
 properties:
@@ -35,19 +35,11 @@ properties:
             $hour: $created_at_date
         total_orders:
           $sum: 1
-        total_revenue:
-          $sum:
-            $toDouble: $total_price
-        total_customers:
-          $addToSet: $email
     - $project:
         _id: 0
         day: $_id.day
         hour: $_id.hour
         total_orders: 1
-        total_revenue: 1
-        total_customers:
-          $size: $total_customers
     - $group:
         _id: 0
         day:
@@ -85,4 +77,75 @@ properties:
     - $sort:
         day: 1
         hour: 1
+    - $addFields:
+        hour:
+          $switch:
+            branches: 
+              - case:
+                  $eq:
+                    - $hour
+                    - 0
+                then: 12 pm
+              - case:
+                  $eq:
+                    - $hour
+                    - 12
+                then: 12 am                  
+              - case:
+                  $lt:
+                    - $hour
+                    - 12
+                then:
+                  $concat:
+                    - $toString:
+                        $hour
+                    - am
+            default:
+              $concat:
+                - $toString:
+                    - $subtract:
+                        - $hour
+                        - 12
+                - pm
+        day:
+          $switch:
+            branches:
+              - case:
+                  $eq:
+                    - $day
+                    - 1
+                then: Sun
+              - case:
+                  $eq:
+                    - $day
+                    - 2
+                then: Mon
+              - case:
+                  $eq:
+                    - $day
+                    - 3
+                then: Tue
+              - case:
+                  $eq:
+                    - $day
+                    - 4
+                then: Wed
+              - case:
+                  $eq:
+                    - $day
+                    - 5
+                then: Thu
+              - case:
+                  $eq:
+                    - $day
+                    - 6
+                then: Fri
+              - case:
+                  $eq:
+                    - $day
+                    - 7
+                then: Sat
+            default: $day
+
+
         

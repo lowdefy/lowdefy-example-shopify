@@ -5,7 +5,7 @@ properties:
 requests:
   - _ref: dashboard/requests/init.yaml
   - _ref: dashboard/requests/totals.yaml
-  - _ref: dashboard/requests/day_time_heatmap.yaml
+  - _ref: dashboard/requests/day_hour_heatmap.yaml
 actions:
   onInit:
     - id: fetch_init
@@ -15,10 +15,7 @@ actions:
       type: set()
       params:
         start_month:
-          _get:
-            key: 0.start_month
-            on:
-              _request: init
+          _date: '2019-03-01'
         end_month:
           _get:
             key: 0.end_month
@@ -26,132 +23,6 @@ actions:
               _request: init
 blocks:
   content:
-    - id: card_totals
-      type: card
-      blocks:
-        - id: statistic_total_orders
-          type: statistic
-          box:
-            span: 4
-          properties:
-            title: Total Orders
-            suffixIcon: shopping
-            value:
-              _get:
-                key: 0.total_orders
-                on:
-                  _request: totals
-            precision: 0
-        - id: statistic_total_revenue
-          type: statistic
-          box:
-            span: 4
-          properties:
-            title: Total Revenue
-            suffixIcon: bank
-            prefix: R
-            value:
-              _get:
-                key: 0.total_revenue
-                on:
-                  _request: totals
-            precision: 0
-        - id: statistic_total_customers
-          type: statistic
-          box:
-            span: 4
-          properties:
-            title: Total Customers
-            suffixIcon: team
-            value:
-              _get:
-                key: 0.total_customers
-                on:
-                  _request: totals
-            precision: 0
-
-
-    - id: card_filter
-      type: card
-      properties:
-      blocks:
-        content:
-          - id: start_month
-            type: month_input
-            box:
-              span: 6
-            properties:
-              title: Start Month
-              label:
-                extra: Show data from to this month (inclusive)
-          - id: end_month
-            type: month_input
-            box:
-              span: 6
-            properties:
-              title: End Month
-              label:
-                extra: Show data up to this month (inclusive)
-          - id: reset
-            type: button
-            box:
-              span: 4
-            properties:
-              title: Reset
-              type: default
-              icon: redo
-            actions:
-              onClick:
-                - id: reset
-                  type: reset()
-          - id: apply_filter
-            type: button
-            box:
-              span: 8
-            properties:
-              title: Apply Filter
-              icon: filter
-            actions:
-              onClick:
-                - id: apply_filter
-                  type: fetch()
-    - id: card_day_time_heatmap
-      type: card
-      blocks:
-        - id: chart_day_time_heatmap
-          type: amcharts_4_xy
-          properties:
-            data:
-              _request: day_time_heatmap
-            xAxes:
-              - type: CategoryAxis
-                title:
-                  text: Day of Week
-                dataFields:
-                  category: day
-            yAxes:
-              - type: CategoryAxis
-                title:
-                  text: Hour
-                dataFields:
-                  category: hour
-            series:
-              - type: ColumnSeries
-                heatRules:
-                  - min: "#fff"
-                    max: "#311b92"
-                    property: fill
-                    target: columns.template
-                dataFields:
-                  categoryX: day
-                  categoryY: hour
-                  value: total_orders
-                columns:
-                  strokeOpacity: 0
-                  tooltipText: "{categoryX} - {categoryY}"
-            cursor:
-              type: XYCursor
-        - id: markdown_day_time_heatmap
-          type: markdown
-          properties:
-            content: "### Heatmap"
+    - _ref: dashboard/totals.yaml
+    - _ref: dashboard/filter.yaml
+    - _ref: dashboard/day_hour_heatmap.yaml
