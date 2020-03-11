@@ -46,16 +46,18 @@ properties:
         landing_site_path:
           $regexFind:
             input: $landing_site
-            regex: (\/.*?\/?.*?)\?
+            regex: (\/.*?)\?
         referring_domain:
           $arrayElemAt:
             - $referring_domain.captures
             - 0
     - $addFields:
         landing_site_path:
-          $arrayElemAt:
-            - $landing_site_path.captures
-            - 0
+          $ifNull:
+            - $arrayElemAt:
+                - $landing_site_path.captures
+                - 0
+            - None
         referring_domain:
           $cond:
             - $regexMatch:
@@ -63,11 +65,6 @@ properties:
                 regex: google
             - Google
             - $referring_domain
-    - $match:
-        landing_site_path:
-          $nin:
-            - null
-            - /
     - $group:
         _id:
           referring_domain: $referring_domain

@@ -1,0 +1,40 @@
+id: card_number_orders
+type: card
+box:
+  justifyItems: center
+blocks:
+  - id: title_number_orders
+    type: title
+    properties:
+      content: Number of Orders per User
+      level: 4
+  - id: chart_number_orders
+    type: amcharts_4_xy
+    box:
+      maxWidth: 600
+    properties:
+      data:
+        _request: number_orders
+      xAxes:
+        - type: CategoryAxis
+          title:
+            text: Number of Visits
+          dataFields:
+            category: number_orders
+          renderer:
+            minGridDistance: 40
+      yAxes:
+        - type: ValueAxis
+          title:
+            text: Count
+          renderer:
+            minGridDistance: 30
+      series:
+        - type: ColumnSeries
+          dataFields:
+            categoryX: number_orders
+            valueY: count
+          columns:
+            tooltipText: "{valueY} users made {categoryX} orders"
+      cursor:
+        type: XYCursor

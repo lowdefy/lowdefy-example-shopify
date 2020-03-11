@@ -1,0 +1,74 @@
+id: number_orders
+type: mongodb_aggregation
+connectionId: orders_mdb
+properties:
+  pipeline:
+    - $match:
+        test: false
+        financial_status: paid
+    - $addFields:
+        start_month:
+          _state: start_month
+        end_month:
+          $dateFromParts:
+            year:
+              $year:
+                _state: end_month
+            month:
+              $add:
+                - $month:
+                    _state: end_month
+                - 1
+    - $match:
+        $expr:
+          $and:
+            - $gte:
+              - $created_at_date
+              - $start_month
+            - $lt:
+              - $created_at_date
+              - $end_month
+    - $group:
+        _id: $email
+        count:
+          $sum: 1
+    - $group:
+        _id: $count
+        count:
+          $sum: 1
+    - $sort:
+        _id: 1
+    - $group:
+        _id: 0
+        data:
+          $push:
+            visits: $_id
+            count: $count
+        max_visits:
+          $max: $_id
+    - $addFields:
+        number_orders:
+          $range:
+            - 1
+            - $add:
+                - 1
+                - $max_visits
+    - $unwind:
+        path: $number_orders
+    - $addFields:
+        index:
+          $indexOfArray:
+            - $data.visits
+            - $number_orders
+    - $project:
+        _id: 0
+        number_orders: 1
+        count:
+          $cond:
+            - $eq:
+                - $index
+                - -1
+            - 0
+            - $arrayElemAt:
+                - $data.count
+                - $index
