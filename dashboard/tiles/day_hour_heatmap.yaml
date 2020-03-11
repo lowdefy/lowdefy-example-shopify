@@ -3,7 +3,7 @@ type: card
 box:
   justifyItems: center
 blocks:
-  - id: day_time_title
+  - id: title_day_hour_heatmap
     type: title
     properties:
       content: Total Orders - Day of Week by Hour

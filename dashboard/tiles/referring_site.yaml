@@ -1,0 +1,29 @@
+id: card_referring_site
+type: card
+box:
+  span: 6
+blocks:
+  - id: title_referring_site
+    type: title
+    properties:
+      content: Referring Sites
+      level: 4
+  - id: table_referring_site
+    type: ag_grid
+    properties:
+      rowData:
+        _request: referring_site
+      columnDefs:
+        - headerName: Referring Site
+          field: referring_domain
+          width: 200
+        - headerName: Landing Path
+          field: landing_site_path
+          width: 200
+        - headerName: Count
+          field: count
+          width: 100
+      defaultColDef:
+        filter: true
+        resizable: true
+        sortable: true

@@ -1,0 +1,53 @@
+id: card_filter
+type: card
+properties:
+blocks:
+  - id: start_month
+    type: month_input
+    box:
+      span: 6
+    properties:
+      title: Start Month
+      disabledDates:
+        min:
+          _state: min_month
+        max:
+          _state: max_month
+      label:
+        extra: Show data from to this month (inclusive)
+  - id: end_month
+    type: month_input
+    box:
+      span: 6
+    properties:
+      title: End Month
+      disabledDates:
+        min:
+          _state: min_month
+        max:
+          _state: max_month
+      label:
+        extra: Show data up to this month (inclusive)
+  - id: reset
+    type: button
+    box:
+      span: 4
+    properties:
+      title: Reset
+      type: default
+      icon: redo
+    actions:
+      onClick:
+        - id: reset
+          type: reset()
+  - id: apply_filter
+    type: button
+    box:
+      span: 8
+    properties:
+      title: Apply Filter
+      icon: filter
+    actions:
+      onClick:
+        - id: apply_filter
+          type: fetch()

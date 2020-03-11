@@ -5,6 +5,7 @@ properties:
   pipeline:
     - $match:
         test: false
+        financial_status: paid
     - $addFields:
         start_month:
           _state: start_month

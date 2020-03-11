@@ -1,0 +1,26 @@
+id: card_google_adwords_pie
+type: card
+box:
+  justifyItems: center
+blocks:
+  - id: title_google_adwords_pie
+    type: title
+    properties:
+      content: Google AdWords Referrals
+      level: 4
+  - id: chart_google_adwords_pie
+    type: amcharts_4_pie
+    box:
+      maxWidth: 600
+    properties:
+      data:
+        _request: google_adwords_pie
+      series:
+        - type: PieSeries
+          dataFields:
+            value: count
+            category: category
+  - id: description_google_adwords_pie
+    type: paragraph
+    properties:
+      content: The number of paid orders where referred to the site by Google AdWords

@@ -2,10 +2,14 @@ id: dashboard
 type: page_header_menu
 properties:
   title: Dashboard
+
 requests:
   - _ref: dashboard/requests/init.yaml
   - _ref: dashboard/requests/totals.yaml
+  - _ref: dashboard/requests/google_adwords_pie.yaml
   - _ref: dashboard/requests/day_hour_heatmap.yaml
+  - _ref: dashboard/requests/referring_site.yaml
+  - _ref: dashboard/requests/referring_site_detail.yaml
 actions:
   onInit:
     - id: fetch_init
@@ -21,8 +25,23 @@ actions:
             key: 0.end_month
             on:
               _request: init
+        min_month:
+          _get:
+            key: 0.start_month
+            on:
+              _request: init
+        max_month:
+          _get:
+            key: 0.end_month
+            on:
+              _request: init
+
 blocks:
   content:
-    - _ref: dashboard/totals.yaml
-    - _ref: dashboard/filter.yaml
-    - _ref: dashboard/day_hour_heatmap.yaml
+
+    - _ref: dashboard/tiles/totals.yaml
+    - _ref: dashboard/tiles/filter.yaml
+    - _ref: dashboard/tiles/google_adwords_pie.yaml
+    - _ref: dashboard/tiles/day_hour_heatmap.yaml
+    - _ref: dashboard/tiles/referring_site.yaml
+    - _ref: dashboard/tiles/referring_site_detail.yaml

@@ -1,4 +1,4 @@
-id: totals
+id: google_adwords_pie
 type: mongodb_aggregation
 connectionId: orders_mdb
 properties:
@@ -28,16 +28,24 @@ properties:
             - $lt:
               - $created_at_date
               - $end_month
-
-    - $group:
-        _id: 0
-        total_orders:
-          $sum: 1
-        total_revenue:
-          $sum:
-            $toDouble: $total_price
-        total_customers:
-          $addToSet: $email
     - $addFields:
-        total_customers:
-          $size: $total_customers
+        category:
+          $cond:
+            - $regexMatch:
+                input: $landing_site
+                regex: gclid
+            - 'Yes'
+            - 'No'
+    - $group:
+        _id: $category
+        count:
+          $sum: 1
+    - $project:
+        _id: 0
+        category: $_id
+        count: 1
+    - $sort:
+        count: -1
+
+
+        
