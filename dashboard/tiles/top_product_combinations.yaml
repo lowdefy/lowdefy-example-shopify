@@ -1,0 +1,27 @@
+id: card_top_product_combinations
+type: card
+blocks:
+  - id: title_top_product_combinations
+    type: title
+    properties:
+      content: Top Selling Product Combinations
+      level: 4
+  - id: table_top_product_combinations
+    type: ag_grid
+    properties:
+      rowData:
+        _request: top_product_combinations
+      columnDefs:
+        - headerName: Title 1
+          field: title1
+          width: 400
+        - headerName: Title 2
+          field: title2
+          width: 400
+        - headerName: Count
+          field: count
+          width: 100
+      defaultColDef:
+        filter: true
+        resizable: true
+        sortable: true

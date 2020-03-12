@@ -1,0 +1,72 @@
+id: top_product_types
+type: mongodb_aggregation
+connectionId: orders_mdb
+properties:
+  pipeline:
+    - $match:
+        test: false
+        financial_status: paid
+    - $addFields:
+        start_month:
+          _state: start_month
+        end_month:
+          $dateFromParts:
+            year:
+              $year:
+                _state: end_month
+            month:
+              $add:
+                - $month:
+                    _state: end_month
+                - 1
+    - $match:
+        $expr:
+          $and:
+            - $gte:
+              - $created_at_date
+              - $start_month
+            - $lt:
+              - $created_at_date
+              - $end_month
+    - $unwind:
+        path: $line_items
+    - $group:
+        _id: $line_items.variant_id
+        count:
+          $sum: 1
+        quantity:
+          $sum: $line_items.quantity
+        name:
+          $first: $line_items.name
+        title:
+          $first: $line_items.title
+        revenue:
+          $sum:
+            $toDouble: $line_items.price
+        max_unit_price:
+          $max:
+            $toDouble: $line_items.price
+        min_unit_price:
+          $min:
+            $toDouble: $line_items.price
+    - $lookup:
+        from: products
+        localField: _id
+        foreignField: variants.id
+        as: product
+    - $unwind:
+        path: $product
+    - $group:
+        _id: $product.product_type
+        count:
+          $sum: $count
+        quantity:
+          $sum: $quantity
+        revenue:
+          $sum: $revenue
+    - $addFields:
+        product_type: $_id
+    - $project:
+        _id: 0
+    - $sort:
+        quantity: -1

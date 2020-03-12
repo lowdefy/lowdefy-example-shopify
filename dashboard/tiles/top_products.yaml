@@ -1,0 +1,42 @@
+id: card_top_products
+type: card
+blocks:
+  - id: title_top_products
+    type: title
+    properties:
+      content: Top Selling Products
+      level: 4
+  - id: table_top_products
+    type: ag_grid
+    properties:
+      rowData:
+        _request: top_products
+      columnDefs:
+        - headerName: Title
+          field: title
+          width: 200
+        - headerName: Quantity
+          field: quantity
+          width: 100
+        - headerName: Orders
+          field: count
+          width: 100
+        - headerName: Revenue
+          field: revenue
+          width: 100
+        - headerName: Max Unit Price
+          field: max_unit_price
+          width: 100
+        - headerName: Product Type
+          field: product_type
+          width: 200
+        - headerName: Tags
+          field: tags
+          width: 200
+        - headerName: Vendor
+          field: vendor
+          width: 200
+      defaultColDef:
+        filter: true
+        resizable: true
+        sortable: true

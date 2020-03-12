@@ -1,0 +1,33 @@
+id: card_top_product_types
+type: card
+blocks:
+  - id: title_top_product_types
+    type: title
+    properties:
+      content: Top Selling Product Types
+      level: 4
+  - id: table_top_product_types
+    type: ag_grid
+    properties:
+      rowData:
+        _request: top_product_types
+      columnDefs:
+        - headerName: Product Type
+          field: product_type
+          width: 200
+        - headerName: Quantity
+          field: quantity
+          width: 100
+        - headerName: Orders
+          field: count
+          width: 100
+        - headerName: Revenue
+          field: revenue
+          width: 100
+        - headerName: Product Type
+          field: product_type
+          width: 200
+      defaultColDef:
+        filter: true
+        resizable: true
+        sortable: true
