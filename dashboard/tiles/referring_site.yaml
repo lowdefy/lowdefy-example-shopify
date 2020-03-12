@@ -2,6 +2,8 @@ id: card_referring_site
 type: card
 box:
   span: 6
+  md:
+    span: 12
 blocks:
   - id: title_referring_site
     type: title

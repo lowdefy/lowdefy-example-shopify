@@ -69,4 +69,4 @@ properties:
     - $project:
         _id: 0
     - $sort:
-        quantity: -1
+        count: -1

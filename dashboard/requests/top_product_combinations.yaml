@@ -65,7 +65,7 @@ properties:
           $sum: 1
     - $sort:
         count: -1
-    - $limit: 100
+    - $limit: 50
     - $lookup:
         from: products
         localField: _id.id

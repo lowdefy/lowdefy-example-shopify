@@ -49,6 +49,9 @@ properties:
         min_unit_price:
           $min:
             $toDouble: $line_items.price
+    - $sort:
+        count: -1
+    - $limit: 100
     - $lookup:
         from: products
         localField: _id
@@ -64,5 +67,3 @@ properties:
     - $project:
         _id: 0
         product: 0
-    - $sort:
-        quantity: -1
