@@ -4,9 +4,9 @@
         $dayOfWeek: $created_at_date
       hour:
         $hour: $created_at_date
-    count:
+    total_orders:
       $sum: 1
-    revenue:
+    total_revenue:
       $sum:
         $toDouble: $total_price
 - $project:

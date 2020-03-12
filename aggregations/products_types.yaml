@@ -1,0 +1,42 @@
+- $unwind:
+    path: $line_items
+- $group:
+    _id: $line_items.variant_id
+    count:
+      $sum: 1
+    quantity:
+      $sum: $line_items.quantity
+    name:
+      $first: $line_items.name
+    title:
+      $first: $line_items.title
+    revenue:
+      $sum:
+        $toDouble: $line_items.price
+    max_unit_price:
+      $max:
+        $toDouble: $line_items.price
+    min_unit_price:
+      $min:
+        $toDouble: $line_items.price
+- $lookup:
+    from: products
+    localField: _id
+    foreignField: variants.id
+    as: product
+- $unwind:
+    path: $product
+- $group:
+    _id: $product.product_type
+    count:
+      $sum: $count
+    quantity:
+      $sum: $quantity
+    revenue:
+      $sum: $revenue
+- $addFields:
+    product_type: $_id
+- $project:
+    _id: 0
+- $sort:
+    product_type: 1

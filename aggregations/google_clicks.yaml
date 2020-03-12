@@ -1,0 +1,15 @@
+- $addFields:
+    gclid:
+      $regexMatch:
+        input: $landing_site
+        regex: gclid
+- $group:
+    _id: $gclid
+    count:
+      $sum: 1
+- $project:
+    _id: 0
+    gclid: $_id
+    count: 1
+- $sort:
+    count: -1

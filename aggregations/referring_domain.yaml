@@ -1,0 +1,31 @@
+- $project:
+    referring_domain:
+      $regexFind:
+        input: $referring_site
+        regex: 'https://(.*?)/'
+- $addFields:
+    referring_domain:
+      $arrayElemAt:
+        - $referring_domain.captures
+        - 0
+- $addFields:
+    referring_domain:
+      $cond:
+        - $regexMatch:
+            input: $referring_domain
+            regex: google
+        - google
+        - $referring_domain
+- $group:
+    _id: $referring_domain
+    count:
+      $sum: 1
+- $project:
+    _id: 0
+    referring_domain:
+      $ifNull:
+        - $_id
+        - None
+    count: 1
+- $sort:
+    count: -1

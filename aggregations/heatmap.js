@@ -20,8 +20,8 @@ db.getCollection("orders").aggregate(
 		{
 			$group: {
 			    _id: { day: { $dayOfWeek: '$created_at_date'  }, hour: { $hour: '$created_at_date' } },
-			    count: { $sum: 1 },
-			    revenue: { $sum: { $toDouble: '$total_price' } }
+			    total_orders: { $sum: 1 },
+			    total_revenue: { $sum: { $toDouble: '$total_price' } }
 			    
 			}
 		},
