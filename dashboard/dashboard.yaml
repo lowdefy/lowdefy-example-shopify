@@ -7,6 +7,7 @@ requests:
   - _ref: dashboard/requests/init.yaml
   - _ref: dashboard/requests/totals.yaml
   - _ref: dashboard/requests/google_adwords_pie.yaml
+  - _ref: dashboard/requests/accepts_marketing_pie.yaml
   - _ref: dashboard/requests/day_hour_heatmap.yaml
   - _ref: dashboard/requests/referring_site.yaml
   - _ref: dashboard/requests/referring_site_detail.yaml
@@ -50,7 +51,9 @@ blocks:
         - _ref: dashboard/tiles/totals.yaml
         - _ref: dashboard/tiles/filter.yaml
         - _ref: dashboard/tiles/number_orders.yaml
-        - _ref: dashboard/tiles/day_hour_heatmap.yaml
+        - _ref: dashboard/tiles/day_hour_heatmap_orders.yaml
+        - _ref: dashboard/tiles/day_hour_heatmap_revenue.yaml
+        - _ref: dashboard/tiles/accepts_marketing_pie.yaml
         - _ref: dashboard/tiles/google_adwords_pie.yaml
         - _ref: dashboard/tiles/referring_site.yaml
         - _ref: dashboard/tiles/referring_site_detail.yaml

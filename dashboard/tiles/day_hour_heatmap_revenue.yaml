@@ -1,14 +1,17 @@
-id: card_day_hour_heatmap
+id: card_day_hour_heatmap_revenue
 type: card
 box:
+  span: 6
   justifyItems: center
+  md:
+    span: 12
 blocks:
-  - id: title_day_hour_heatmap
+  - id: title_day_hour_heatmap_revenue
     type: title
     properties:
-      content: Total Orders - Day of Week by Hour
+      content: Average Revenue per Order - Day of Week by Hour
       level: 4
-  - id: chart_day_hour_heatmap
+  - id: chart_day_hour_heatmap_revenue
     type: amcharts_4_xy
     box:
       maxWidth: 600
@@ -42,11 +45,11 @@ blocks:
           dataFields:
             categoryX: day
             categoryY: hour
-            value: total_orders
+            value: revenue_per_order
           columns:
             height: 100%
             width: 100%
             strokeWidth: 2
             strokeOpacity: 1
             stroke: '#ffffff'
-            tooltipText: "{day}, {hour} GMT: {total_orders} orders"
+            tooltipText: "{day}, {hour} GMT: {revenue_per_order} Average Revenue"

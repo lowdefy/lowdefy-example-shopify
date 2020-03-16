@@ -1,4 +1,4 @@
-id: card_google_adwords_pie
+id: card_accepts_marketing_pie
 type: card
 box:
   span: 6
@@ -6,24 +6,24 @@ box:
   md:
     span: 12
 blocks:
-  - id: title_google_adwords_pie
+  - id: title_accepts_marketing_pie
     type: title
     properties:
-      content: Google AdWords Referrals
+      content: Buyer Accepts Marketing
       level: 4
-  - id: chart_google_adwords_pie
+  - id: chart_accepts_marketing_pie
     type: amcharts_4_pie
     box:
       maxWidth: 600
     properties:
       data:
-        _request: google_adwords_pie
+        _request: accepts_marketing_pie
       series:
         - type: PieSeries
           dataFields:
             value: count
             category: category
-  - id: description_google_adwords_pie
+  - id: description_accepts_marketing_pie
     type: paragraph
     properties:
-      content: The number of paid orders where referred to the site by Google AdWords
+      content: The number of buyers who accept marketing

@@ -36,11 +36,15 @@ properties:
             $hour: $created_at_date
         total_orders:
           $sum: 1
+        total_revenue:
+          $sum: 
+            $toDouble: $total_price
     - $project:
         _id: 0
         day: $_id.day
         hour: $_id.hour
         total_orders: 1
+        total_revenue: 1
     - $group:
         _id: 0
         day:
@@ -72,13 +76,23 @@ properties:
               hour: $hour
               total_orders: 0
               total_revenue: 0
-              total_customers: 0
     - $replaceRoot:
         newRoot: $data
     - $sort:
         day: 1
         hour: 1
     - $addFields:
+        revenue_per_order:
+          $round:
+            - $cond:
+                - $gt:
+                    - $total_orders
+                    - 10
+                - $divide:
+                    - $total_revenue
+                    - $total_orders
+                - 0
+            - 2
         hour:
           $switch:
             branches: 
