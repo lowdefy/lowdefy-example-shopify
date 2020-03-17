@@ -1,4 +1,4 @@
-id: accepts_marketing_pie
+id: regions
 type: mongodb_aggregation
 connectionId: orders_mdb
 properties:
@@ -29,23 +29,26 @@ properties:
               - $created_at_date
               - $end_month      
     - $group:
-        _id: $email
-        buyer_accepts_marketing:
-          $last: $buyer_accepts_marketing
-    - $group:
-        _id: $buyer_accepts_marketing
-        count:
+        _id:
+          province: $billing_address.province
+          country: $billing_address.country
+        total_orders:
           $sum: 1
+        total_revenue:
+          $sum:
+            $toDouble: $subtotal_price
+        total_customers:
+          $addToSet: $email
     - $project:
         _id: 0
-        category:
-          $cond:
-            - '$_id'
-            - 'Yes'
-            - 'No'
-        count: 1
+        province: $_id.province
+        country: $_id.country
+        total_orders: 1
+        total_revenue: 1
+        total_customers:
+          $size: $total_customers
     - $sort:
-        count: -1
+        total_orders: -1
 
 
         

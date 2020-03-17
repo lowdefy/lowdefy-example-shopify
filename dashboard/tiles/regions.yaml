@@ -1,0 +1,33 @@
+id: card_regions
+type: card
+blocks:
+  - id: title_regions
+    type: title
+    properties:
+      content: Sales by Region
+      level: 4
+  - id: table_regions
+    type: ag_grid
+    properties:
+      rowData:
+        _request: regions
+      columnDefs:
+        - headerName: Country
+          field: country
+          width: 200
+        - headerName: Province
+          field: province
+          width: 200
+        - headerName: Orders
+          field: total_orders
+          width: 100
+        - headerName: Revenue
+          field: total_revenue
+          width: 100
+        - headerName: Customers
+          field: total_customers
+          width: 100
+      defaultColDef:
+        filter: true
+        resizable: true
+        sortable: true

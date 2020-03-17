@@ -35,7 +35,7 @@ properties:
           $sum: 1
         total_revenue:
           $sum:
-            $toDouble: $total_price
+            $toDouble: $subtotal_price
         total_customers:
           $addToSet: $email
     - $addFields:

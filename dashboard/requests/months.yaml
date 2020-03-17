@@ -1,0 +1,105 @@
+id: months
+type: mongodb_aggregation
+connectionId: orders_mdb
+properties:
+  pipeline:
+    - $match:
+        test: false
+    - $addFields:
+        start_month:
+          _state: start_month
+        end_month:
+          $dateFromParts:
+            year:
+              $year:
+                _state: end_month
+            month:
+              $add:
+                - $month:
+                    _state: end_month
+                - 1
+    - $match:
+        $expr:
+          $and:
+            - $gte:
+              - $created_at_date
+              - $start_month
+            - $lt:
+              - $created_at_date
+              - $end_month      
+    - $addFields:
+        paid:
+          $eq:
+            - $financial_status
+            - paid
+        pending:
+          $eq:
+            - $financial_status
+            - pending
+        voided:
+          $eq:
+            - $financial_status
+            - voided
+        partially_refunded:
+          $eq:
+            - $financial_status
+            - partially_refunded
+    - $group:
+        _id:
+          $dateFromParts:
+            year:
+              $year: $created_at_date
+            month:
+              $month: $created_at_date
+        paid_orders:
+          $sum:
+            $cond:
+              - $paid
+              - 1
+              - 0
+        paid_revenue:
+          $sum:
+            $cond:
+              - $paid
+              - $toDouble: $subtotal_price
+              - 0
+        pending_orders:
+          $sum:
+            $cond:
+              - $pending
+              - 1
+              - 0
+        pending_revenue:
+          $sum:
+            $cond:
+              - $voided
+              - $toDouble: $subtotal_price
+              - 0
+        voided_orders:
+          $sum:
+            $cond:
+              - $voided
+              - 1
+              - 0
+        partially_refunded_orders:
+          $sum:
+            $cond:
+              - $partially_refunded
+              - 1
+              - 0
+        partially_refunded_revenue:
+          $sum:
+            $cond:
+              - $partially_refunded
+              - $toDouble: $subtotal_price
+              - 0
+    - $addFields:
+        month: $_id
+    - $project:
+        _id: 0
+    - $sort:
+        month: 1
+
+
+
+        

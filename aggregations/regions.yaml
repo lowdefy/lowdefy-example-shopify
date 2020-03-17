@@ -1,0 +1,23 @@
+- $sort:
+    created_at_date: -1
+- $group:
+    _id:
+      province: $billing_address.province
+      country: $billing_address.country
+    total_orders:
+      $sum: 1
+    total_revenue:
+      $sum:
+        $toDouble: $total_price
+    total_customers:
+      $addToSet: $email
+- $project:
+    _id: 0
+    province: $_id.province
+    country: $_id.country
+    total_orders: 1
+    total_revenue: 1
+    total_customers:
+      $size: $total_customers
+- $sort:
+    total_orders: -1

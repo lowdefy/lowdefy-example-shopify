@@ -15,6 +15,8 @@ requests:
   - _ref: dashboard/requests/top_products.yaml
   - _ref: dashboard/requests/top_product_types.yaml
   - _ref: dashboard/requests/top_product_combinations.yaml
+  - _ref: dashboard/requests/regions.yaml
+  - _ref: dashboard/requests/months.yaml
 actions:
   onInit:
     - id: fetch_init
@@ -50,6 +52,8 @@ blocks:
       blocks:
         - _ref: dashboard/tiles/totals.yaml
         - _ref: dashboard/tiles/filter.yaml
+        - _ref: dashboard/tiles/orders_per_month.yaml
+        - _ref: dashboard/tiles/revenue_per_month.yaml
         - _ref: dashboard/tiles/number_orders.yaml
         - _ref: dashboard/tiles/day_hour_heatmap_orders.yaml
         - _ref: dashboard/tiles/day_hour_heatmap_revenue.yaml
@@ -60,3 +64,4 @@ blocks:
         - _ref: dashboard/tiles/top_products.yaml
         - _ref: dashboard/tiles/top_product_types.yaml
         - _ref: dashboard/tiles/top_product_combinations.yaml
+        - _ref: dashboard/tiles/regions.yaml

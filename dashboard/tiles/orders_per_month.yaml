@@ -1,0 +1,124 @@
+id: card_orders_per_month
+type: card
+box:
+  justifyItems: center
+blocks:
+  - id: title_orders_per_month
+    type: title
+    properties:
+      content: Orders per Month
+      level: 4
+  - id: chart_orders_per_month
+    type: amcharts_4_xy
+    box:
+      maxWidth: 900
+    properties:
+      data:
+        _request: months
+      xAxes:
+        - type: DateAxis
+          title:
+            text: Month
+          renderer:
+            minGridDistance: 40
+      yAxes:
+        - type: ValueAxis
+          min: 0
+          title:
+            text: Count
+      series:
+        - type: LineSeries
+          name: Paid
+          stroke: '#80deea'
+          strokeWidth: 2
+          tensionX: 0.9
+          tensionY: 0.9
+          legendSettings:
+            itemValueText: "{valueY}"
+          dataFields:
+            dateX: month
+            valueY: paid_orders
+          bullets:
+            - type: CircleBullet
+              tooltipText: "{valueY}"
+              fill: '#80deea'
+              strokeWidth: 0
+              scale: 0.5
+              states:
+                hover:
+                  properties:
+                    scale: 1.2
+        - type: LineSeries
+          name: Pending
+          stroke: '#e6ee9c'
+          strokeWidth: 2
+          tensionX: 0.9
+          tensionY: 0.9
+          legendSettings:
+            itemValueText: "{valueY}"
+          hidden: true
+          dataFields:
+            dateX: month
+            valueY: pending_orders
+          bullets:
+            - type: CircleBullet
+              tooltipText: "{valueY}"
+              fill: '#e6ee9c'
+              strokeWidth: 0
+              scale: 0.5
+              states:
+                hover:
+                  properties:
+                    scale: 1.2
+        - type: LineSeries
+          name: Voided
+          stroke: '#f48fb1'
+          strokeWidth: 2
+          tensionX: 0.9
+          tensionY: 0.9
+          legendSettings:
+            itemValueText: "{valueY}"
+          hidden: true
+          dataFields:
+            dateX: month
+            valueY: voided_orders
+          bullets:
+            - type: CircleBullet
+              tooltipText: "{valueY}"
+              fill: '#f48fb1'
+              strokeWidth: 0
+              scale: 0.5
+              states:
+                hover:
+                  properties:
+                    scale: 1.2
+        - type: LineSeries
+          name: Partially Refunded
+          stroke: '#9fa8da'
+          strokeWidth: 2
+          tensionX: 0.9
+          tensionY: 0.9
+          legendSettings:
+            itemValueText: "{valueY}"
+          hidden: true
+          dataFields:
+            dateX: month
+            valueY: partially_refunded_orders
+          bullets:
+            - type: CircleBullet
+              tooltipText: "{valueY}"
+              fill: '#9fa8da'
+              strokeWidth: 0
+              scale: 0.5
+              states:
+                hover:
+                  properties:
+                    scale: 1.2
+      legend:
+        type: Legend
+      cursor:
+        type: XYCursor
+        lineX:
+          disabled: true
+        lineY:
+          disabled: true

@@ -38,7 +38,7 @@ properties:
           $sum: 1
         total_revenue:
           $sum: 
-            $toDouble: $total_price
+            $toDouble: $subtotal_price
     - $project:
         _id: 0
         day: $_id.day

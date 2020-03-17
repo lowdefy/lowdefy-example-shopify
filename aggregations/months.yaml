@@ -1,0 +1,106 @@
+- $addFields:
+    paid:
+      $eq:
+        - $financial_status
+        - paid
+    pending:
+      $eq:
+        - $financial_status
+        - pending
+    voided:
+      $eq:
+        - $financial_status
+        - voided
+    partially_refunded:
+      $eq:
+        - $financial_status
+        - partially_refunded
+- $group:
+    _id:
+      $dateFromParts:
+        year:
+          $year: $created_at_date
+        month:
+          $month: $created_at_date
+    c:
+      $sum: 1
+    paid_orders:
+      $sum:
+        $cond:
+          - $paid
+          - 1
+          - 0
+    paid_revenue:
+      $sum:
+        $cond:
+          - $paid
+          - $toDouble: $total_price
+          - 0
+    paid_customers:
+      $addToSet:
+        $cond:
+          - $paid
+          - $email
+          - $$REMOVE
+    pending_orders:
+      $sum:
+        $cond:
+          - $pending
+          - 1
+          - 0
+    pending_revenue:
+      $sum:
+        $cond:
+          - $voided
+          - $toDouble: $total_price
+          - 0
+    pending_customers:
+      $addToSet:
+        $cond:
+          - $pending
+          - $email
+          - $$REMOVE
+    voided_orders:
+      $sum:
+        $cond:
+          - $voided
+          - 1
+          - 0
+    voided_customers:
+      $addToSet:
+        $cond:
+          - $voided
+          - $email
+          - $$REMOVE
+    partially_refunded_orders:
+      $sum:
+        $cond:
+          - $partially_refunded
+          - 1
+          - 0
+    partially_refunded_revenue:
+      $sum:
+        $cond:
+          - $partially_refunded
+          - $toDouble: $total_price
+          - 0
+    partially_refunded_customers:
+      $addToSet:
+        $cond:
+          - $partially_refunded
+          - $email
+          - $$REMOVE
+- $addFields:
+    month: $_id
+    paid_customers:
+      $size: $paid_customers
+    pending_customers:
+      $size: $pending_customers
+    voided_customers:
+      $size: $voided_customers
+    partially_refunded_customers:
+      $size: $partially_refunded_customers
+- $project:
+    _id: 0
+- $sort:
+    month: 1
