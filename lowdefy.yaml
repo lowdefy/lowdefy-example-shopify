@@ -1,8 +1,8 @@
 config:
   auth:
-    createUsers: 'sign_up'
-  publicHomePageId: welcome
+    createUsers: 'invite_only'
   authHomePageId: dashboard
+  publicHomePageId: welcome
 
 connections:
   - id: api_calls_mdb
@@ -105,12 +105,12 @@ menus:
         pageId: dashboard
         properties:
           title: Dashboard
-          icon: pie-chart
+          icon: PieChartOutlined
       - id: admin_group
         type: menu_group
         properties:
           title: Admin
-          icon: control
+          icon: ControlOutlined
         links:
           - id: update_orders
             type: menu_link
@@ -127,9 +127,9 @@ menus:
         pageId: profile
         properties:
           title: Profile
-          icon: user
+          icon: UserOutlined
 pages:
-  - _ref: welcome.yaml
   - _ref: dashboard/dashboard.yaml
   - _ref: api/update-orders.yaml
   - _ref: api/update-products.yaml
+  - _ref: welcome.yaml

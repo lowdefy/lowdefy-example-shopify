@@ -7,7 +7,7 @@ blocks:
       span: 4
     properties:
       title: Total Orders
-      suffixIcon: shopping
+      suffixIcon: ShoppingOutlined
       value:
         _get:
           key: 0.total_orders
@@ -20,7 +20,7 @@ blocks:
       span: 4
     properties:
       title: Total Revenue
-      suffixIcon: bank
+      suffixIcon: BankOutlined
       prefix: R
       value:
         _get:
@@ -34,7 +34,7 @@ blocks:
       span: 4
     properties:
       title: Total Customers
-      suffixIcon: team
+      suffixIcon: TeamOutlined
       value:
         _get:
           key: 0.total_customers

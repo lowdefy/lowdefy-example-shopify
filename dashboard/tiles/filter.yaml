@@ -35,7 +35,7 @@ blocks:
     properties:
       title: Reset
       type: default
-      icon: redo
+      icon: RedoOutlined
     actions:
       onClick:
         - id: reset
@@ -46,7 +46,7 @@ blocks:
       span: 8
     properties:
       title: Apply Filter
-      icon: filter
+      icon: FilterOutlined
     actions:
       onClick:
         - id: apply_filter
