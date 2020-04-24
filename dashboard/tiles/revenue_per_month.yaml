@@ -1,16 +1,16 @@
 id: card_revenue_per_month
-type: card
-box:
+type: Card
+style:
   justifyItems: center
 blocks:
   - id: title_revenue_per_month
-    type: title
+    type: Title
     properties:
       content: Revenue per Month
       level: 4
   - id: chart_revenue_per_month
-    type: amcharts_4_xy
-    box:
+    type: AmCharts4XY
+    style:
       maxWidth: 900
     properties:
       data:

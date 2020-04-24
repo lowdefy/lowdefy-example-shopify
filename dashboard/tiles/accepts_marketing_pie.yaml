@@ -1,19 +1,19 @@
 id: card_accepts_marketing_pie
-type: card
-box:
-  span: 6
+type: Card
+style:
+  --span: 6
   justifyItems: center
   md:
-    span: 12
+    --span: 12
 blocks:
   - id: title_accepts_marketing_pie
-    type: title
+    type: Title
     properties:
       content: Buyer Accepts Marketing
       level: 4
   - id: chart_accepts_marketing_pie
-    type: amcharts_4_pie
-    box:
+    type: AmCharts4Pie
+    style:
       maxWidth: 600
     properties:
       data:
@@ -24,6 +24,6 @@ blocks:
             value: count
             category: category
   - id: description_accepts_marketing_pie
-    type: paragraph
+    type: Paragraph
     properties:
       content: The number of buyers who accept marketing

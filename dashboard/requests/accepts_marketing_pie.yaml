@@ -1,5 +1,5 @@
 id: accepts_marketing_pie
-type: mongodb_aggregation
+type: MongoDBAggregation
 connectionId: orders_mdb
 properties:
   pipeline:

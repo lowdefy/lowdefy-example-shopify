@@ -1,13 +1,13 @@
 id: card_totals
-type: card
+type: Card
 blocks:
   - id: statistic_total_orders
-    type: statistic
-    box:
-      span: 4
+    type: Statistic
+    style:
+      --span: 4
     properties:
       title: Total Orders
-      suffixIcon: ShoppingOutlined
+      IconSuffix: ShoppingOutlined
       value:
         _get:
           key: 0.total_orders
@@ -15,12 +15,12 @@ blocks:
             _request: totals
       precision: 0
   - id: statistic_total_revenue
-    type: statistic
-    box:
-      span: 4
+    type: Statistic
+    style:
+      --span: 4
     properties:
       title: Total Revenue
-      suffixIcon: BankOutlined
+      IconSuffix: BankOutlined
       prefix: R
       value:
         _get:
@@ -29,12 +29,12 @@ blocks:
             _request: totals
       precision: 0
   - id: statistic_total_customers
-    type: statistic
-    box:
-      span: 4
+    type: Statistic
+    style:
+      --span: 4
     properties:
       title: Total Customers
-      suffixIcon: TeamOutlined
+      IconSuffix: TeamOutlined
       value:
         _get:
           key: 0.total_customers

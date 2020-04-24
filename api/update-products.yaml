@@ -1,22 +1,22 @@
 id: update-products
-type: page_header_menu
+type: PageHeaderMenu
 properties:
   title: Update Products
-  breadcrumb:
+  Breadcrumb:
    list:
     - Admin
     - Update Products
 actions:
   onEnter:
     - id: set_initial
-      type: set()
+      type: setState()
       params: 
         initial: true
     - id: fetch_api_info
       type: fetch()
       params: api_info
     - id: set_api_info
-      type: set()
+      type: setState()
       params:
         api_info:
           _get:
@@ -25,7 +25,7 @@ actions:
               _request: api_info
 requests:
   - id: api_info
-    type: mongodb_aggregation
+    type: MongoDBAggregation
     connectionId: api_calls_mdb
     properties:
       pipeline:
@@ -83,13 +83,13 @@ requests:
                     - null
 
   - id: get_products_count
-    type: axios_http
+    type: AxiosHttp
     connectionId: shopify_products_count
     properties: {}
 
 mutations:
   - id: get_products
-    type: axios_http
+    type: AxiosHttp
     connectionId: shopify_products
     properties:
       params:
@@ -116,13 +116,13 @@ mutations:
                   _state: api_info.max_id
 
   - id: insert_data
-    type: mongodb_insert_many
+    type: MongoDBInsertMany
     connectionId: products_temp_mdb
     properties:
       docs:
         _state: data 
   - id: transform_data
-    type: mongodb_aggregation
+    type: MongoDBAggregation
     connectionId: products_temp_mdb
     properties:
       pipeline:
@@ -144,7 +144,7 @@ mutations:
             into: products
 
   - id: clear_temp_collection
-    type: mongodb_aggregation
+    type: MongoDBAggregation
     connectionId: products_temp_mdb
     properties:
       pipeline:
@@ -154,7 +154,7 @@ mutations:
         - $out: products_temp
 
   - id: insert_api_call
-    type: mongodb_insert_one
+    type: MongoDBInsertOne
     connectionId: api_calls_mdb
     properties:
       doc:
@@ -190,15 +190,15 @@ mutations:
                     _state: api_info.max_id
 blocks:
   - id: content
-    type: card
+    type: Card
     blocks:
       - id: title
-        type: title
+        type: Title
         properties:
           content: Fetch Products by ID
           level: 3
       - id: description
-        type: descriptions
+        type: Descriptions
         properties:
           column: 1
           items:
@@ -216,9 +216,10 @@ blocks:
                 _state: api_info.count
 
       - id: fetch
-        type: button
+        type: Button
         properties:
           title: Fetch
+          block: true
           disabled:
             _and:
               - _not:
@@ -231,7 +232,7 @@ blocks:
               type: mutate()
               params: get_products
             - id: set
-              type: set()
+              type: setState()
               params:
                 data:
                   _get:
@@ -256,14 +257,14 @@ blocks:
               type: mutate()
               params: insert_api_call  
             - id: set_initial
-              type: set()
+              type: setState()
               params: 
                 initial: false
             - id: fetch_api_info
               type: fetch()
               params: api_info
             - id: set_api_info
-              type: set()
+              type: setState()
               params: 
                 api_info:
                   _get:

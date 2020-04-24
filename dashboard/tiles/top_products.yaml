@@ -1,13 +1,13 @@
 id: card_top_products
-type: card
+type: Card
 blocks:
   - id: title_top_products
-    type: title
+    type: Title
     properties:
       content: Top Selling Products
       level: 4
   - id: table_top_products
-    type: ag_grid
+    type: AgGrid
     properties:
       rowData:
         _request: top_products

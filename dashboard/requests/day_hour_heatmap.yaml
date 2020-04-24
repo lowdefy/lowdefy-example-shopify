@@ -1,5 +1,5 @@
 id: day_hour_heatmap
-type: mongodb_aggregation
+type: MongoDBAggregation
 connectionId: orders_mdb
 properties:
   pipeline:

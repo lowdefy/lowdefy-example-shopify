@@ -1,16 +1,16 @@
 id: card_number_orders
-type: card
-box:
+type: Card
+style:
   justifyItems: center
 blocks:
   - id: title_number_orders
-    type: title
+    type: Title
     properties:
       content: Number of Orders per User
       level: 4
   - id: chart_number_orders
-    type: amcharts_4_xy
-    box:
+    type: AmCharts4XY
+    style:
       maxWidth: 600
     properties:
       data:

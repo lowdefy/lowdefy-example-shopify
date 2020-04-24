@@ -1,5 +1,5 @@
 id: top_product_types
-type: mongodb_aggregation
+type: MongoDBAggregation
 connectionId: orders_mdb
 properties:
   pipeline:

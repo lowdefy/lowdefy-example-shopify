@@ -2,11 +2,11 @@ config:
   auth:
     createUsers: 'invite_only'
   authHomePageId: dashboard
-  publicHomePageId: welcome
+  publicHomePageId: dashboard
 
 connections:
   - id: api_calls_mdb
-    type: mongodb_collection
+    type: MongoDBCollection
     properties:
       databaseUri:
         _secret: shopify_mdb
@@ -16,7 +16,7 @@ connections:
       write: true
 
   - id: orders_mdb
-    type: mongodb_collection
+    type: MongoDBCollection
     properties:
       databaseUri:
         _secret: shopify_mdb
@@ -26,7 +26,7 @@ connections:
       write: true
 
   - id: orders_temp_mdb
-    type: mongodb_collection
+    type: MongoDBCollection
     properties:
       databaseUri:
         _secret: shopify_mdb
@@ -36,7 +36,7 @@ connections:
       write: true
 
   - id: shopify_orders
-    type: axios_http
+    type: AxiosHttp
     properties:
       url: /admin/api/2020-01/orders.json
       method: get
@@ -46,7 +46,7 @@ connections:
         _secret: shopify_api_auth
 
   - id: shopify_orders_count
-    type: axios_http
+    type: AxiosHttp
     properties:
       url: /admin/api/2020-01/orders/count.json
       method: get
@@ -58,7 +58,7 @@ connections:
         status: any
 
   - id: products_mdb
-    type: mongodb_collection
+    type: MongoDBCollection
     properties:
       databaseUri:
         _secret: shopify_mdb
@@ -68,7 +68,7 @@ connections:
       write: true
 
   - id: products_temp_mdb
-    type: mongodb_collection
+    type: MongoDBCollection
     properties:
       databaseUri:
         _secret: shopify_mdb
@@ -78,7 +78,7 @@ connections:
       write: true
 
   - id: shopify_products
-    type: axios_http
+    type: AxiosHttp
     properties:
       url: /admin/api/2020-01/products.json
       method: get
@@ -88,7 +88,7 @@ connections:
         _secret: shopify_api_auth
 
   - id: shopify_products_count
-    type: axios_http
+    type: AxiosHttp
     properties:
       url: /admin/api/2020-01/products/count.json
       method: get
@@ -101,35 +101,35 @@ menus:
   - id: default
     links:
       - id: dashboard
-        type: menu_link
+        type: MenuLink
         pageId: dashboard
         properties:
           title: Dashboard
-          icon: PieChartOutlined
+          Icon: PieChartOutlined
+      - id: customers
+        type: MenuLink
+        pageId: customers
+        properties:
+          title: Customers
+          Icon: TeamOutlined
       - id: admin_group
-        type: menu_group
+        type: MenuGroup
         properties:
           title: Admin
-          icon: ControlOutlined
+          Icon: ControlOutlined
         links:
           - id: update_orders
-            type: menu_link
+            type: MenuLink
             pageId: update-orders
             properties:
               title: Update Orders
           - id: update_products
-            type: menu_link
+            type: MenuLink
             pageId: update-products
             properties:
               title: Update Products
-      - id: profile
-        type: menu_link
-        pageId: profile
-        properties:
-          title: Profile
-          icon: UserOutlined
 pages:
   - _ref: dashboard/dashboard.yaml
+  - _ref: customers/customers.yaml
   - _ref: api/update-orders.yaml
   - _ref: api/update-products.yaml
-  - _ref: welcome.yaml

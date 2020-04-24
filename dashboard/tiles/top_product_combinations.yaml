@@ -1,13 +1,13 @@
 id: card_top_product_combinations
-type: card
+type: Card
 blocks:
   - id: title_top_product_combinations
-    type: title
+    type: Title
     properties:
       content: Top Selling Product Combinations
       level: 4
   - id: table_top_product_combinations
-    type: ag_grid
+    type: AgGrid
     properties:
       rowData:
         _request: top_product_combinations

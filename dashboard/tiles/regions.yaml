@@ -1,13 +1,13 @@
 id: card_regions
-type: card
+type: Card
 blocks:
   - id: title_regions
-    type: title
+    type: Title
     properties:
       content: Sales by Region
       level: 4
   - id: table_regions
-    type: ag_grid
+    type: AgGrid
     properties:
       rowData:
         _request: regions

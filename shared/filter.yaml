@@ -1,11 +1,11 @@
 id: card_filter
-type: card
+type: Card
 properties:
 blocks:
   - id: start_month
-    type: month_input
-    box:
-      span: 6
+    type: MonthSelector
+    style:
+      --span: 6
     properties:
       title: Start Month
       disabledDates:
@@ -16,9 +16,9 @@ blocks:
       label:
         extra: Show data from to this month (inclusive)
   - id: end_month
-    type: month_input
-    box:
-      span: 6
+    type: MonthSelector
+    style:
+      --span: 6
     properties:
       title: End Month
       disabledDates:
@@ -29,24 +29,26 @@ blocks:
       label:
         extra: Show data up to this month (inclusive)
   - id: reset
-    type: button
-    box:
-      span: 4
+    type: Button
+    style:
+      --span: 4
     properties:
       title: Reset
       type: default
-      icon: RedoOutlined
+      Icon: RedoOutlined
+      block: true
     actions:
       onClick:
         - id: reset
           type: reset()
   - id: apply_filter
-    type: button
-    box:
-      span: 8
+    type: Button
+    style:
+      --span: 8
     properties:
       title: Apply Filter
-      icon: FilterOutlined
+      Icon: FilterOutlined
+      block: true
     actions:
       onClick:
         - id: apply_filter

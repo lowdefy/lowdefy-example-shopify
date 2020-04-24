@@ -1,10 +1,10 @@
 id: dashboard
-type: page_header_menu
+type: PageHeaderMenu
 properties:
   title: Dashboard
 
 requests:
-  - _ref: dashboard/requests/init.yaml
+  - _ref: shared/init.yaml
   - _ref: dashboard/requests/totals.yaml
   - _ref: dashboard/requests/google_adwords_pie.yaml
   - _ref: dashboard/requests/accepts_marketing_pie.yaml
@@ -23,7 +23,7 @@ actions:
       type: fetch()
       params: init
     - id: set_init
-      type: set()
+      type: setState()
       params:
         start_month:
           _date: '2019-03-01'
@@ -44,14 +44,14 @@ actions:
               _request: init
 
 blocks:
-  content:
+  Content:
     - id: content_grid
-      type: grid
-      box:
+      type: Box
+      style:
         maxWidth: 1300px
       blocks:
         - _ref: dashboard/tiles/totals.yaml
-        - _ref: dashboard/tiles/filter.yaml
+        - _ref: shared/filter.yaml
         - _ref: dashboard/tiles/orders_per_month.yaml
         - _ref: dashboard/tiles/revenue_per_month.yaml
         - _ref: dashboard/tiles/number_orders.yaml
