@@ -22,8 +22,6 @@
           $year: $created_at_date
         month:
           $month: $created_at_date
-    c:
-      $sum: 1
     paid_orders:
       $sum:
         $cond:

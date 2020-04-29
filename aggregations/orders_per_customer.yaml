@@ -1,0 +1,44 @@
+- $group:
+    _id: $email
+    count:
+      $sum: 1
+- $group:
+    _id: $count
+    count:
+      $sum: 1
+- $sort:
+    _id: 1
+- $group:
+    _id: 0
+    data:
+      $push:
+        visits: $_id
+        count: $count
+    max_visits:
+      $max: $_id
+- $addFields:
+    number_visits:
+      $range:
+        - 1
+        - $add:
+            - 1
+            - $max_visits
+- $unwind:
+    path: $number_visits
+- $addFields:
+    index:
+      $indexOfArray:
+        - $data.visits
+        - $number_visits
+- $project:
+    _id: 0
+    number_visits: 1
+    count:
+      $cond:
+        - $eq:
+            - $index
+            - -1
+        - 0
+        - $arrayElemAt:
+            - $data.count
+            - $index

@@ -74,8 +74,8 @@ db.getCollection("mba_basket").aggregate(
 		{
 			$project: {
 			    _id: 0,
-			    1: '$_id.1',
-			    2: '$_id.2',
+			    '1': '$_id.1',
+			    '2': '$_id.2',
 			    count: 1  
 			}
 		},

@@ -1,0 +1,35 @@
+- $match:
+    financial_status: paid
+- $match:
+    $expr:
+      $gt:
+        - $size: $line_items
+        - 1
+- $addFields:
+    line_items:
+      $setUnion:
+        - $line_items.product_id
+        - []
+- $unwind:
+    path: $line_items
+- $lookup:
+    from: products
+    localField: line_items
+    foreignField: _id
+    as: product
+- $unwind:
+    path: $product
+- $group:
+    _id: $_id
+    products:
+      $push: $product._id
+    types:
+      $push: $product.product_type
+    vendors:
+      $push: $product.vendor
+- $match:
+    $expr:
+      $gt:
+        - $size: $products
+        - 1
+- $out: mba_basket

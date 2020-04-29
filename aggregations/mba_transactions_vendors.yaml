@@ -1,0 +1,28 @@
+- $match:
+    financial_status: paid
+- $project:
+    line_items:
+      $setUnion:
+        - $line_items.product_id
+        - []
+- $unwind:
+    path: $line_items
+- $group:
+    _id: $line_items
+    count:
+      $sum: 1
+- $match:
+    _id:
+      $ne: null
+- $lookup:
+    from: products
+    localField: _id
+    foreignField: _id
+    as: product
+- $unwind:
+    path: $product
+- $group:
+    _id: $product.vendor
+    count:
+      $sum: $count
+- $out: mba_transactions_vendors

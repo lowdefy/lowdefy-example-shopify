@@ -1,0 +1,44 @@
+- $project:
+    '1': $types
+    '2': $types
+- $unwind:
+    path: $1
+    includeArrayIndex: index
+- $addFields:
+    '2':
+      $setUnion:
+        - $concatArrays:
+            - $slice:
+                - $2
+                - $index
+            - $slice:
+                - $2
+                - $add:
+                    - $index
+                    - 1
+                - 99
+        - []
+- $unwind:
+    path: $2
+- $group:
+    _id:
+      '1': $1
+      '2': $2
+    count:
+      $sum: 1
+- $match:
+    _id.1:
+      $ne: null
+    _id.2:
+      $ne: null
+- $match:
+    $expr:
+      $gte:
+        - $_id.1
+        - $_id.2
+- $project:
+    '1': $_id.1
+    '2': $_id.2
+    _id: 0
+    count: 1
+- $out: mba_combinations_types

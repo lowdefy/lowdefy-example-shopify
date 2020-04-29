@@ -79,8 +79,8 @@ db.getCollection("mba_combinations_products").aggregate(
 		// Stage 8
 		{
 			$project: {
-			     1: '$1.title',
-			     2: '$2.title',
+			     '1': '$1.title',
+			     '2': '$2.title',
 			     count: 1,
 			     support_1: { $round: [ { $multiply: [ '$sup_1', 100 ] }, 2 ] },
 			     support_2: { $round: [ { $multiply: [ '$sup_2', 100 ] }, 2 ] },

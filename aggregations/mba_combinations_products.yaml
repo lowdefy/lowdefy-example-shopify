@@ -1,0 +1,42 @@
+- $project:
+    products:
+      $map:
+        input: $products
+        as: item
+        in:
+          '1': $$item
+          '2':
+            $filter:
+              input: $products
+              as: other
+              cond:
+                $ne:
+                  - $$other
+                  - $$item
+- $unwind:
+    path: $products
+- $unwind:
+    path: $products.2
+- $group:
+    _id: $products
+    count:
+      $sum: 1
+- $match:
+    _id.1:
+      $ne: null
+    _id.2:
+      $ne: null
+- $match:
+    $expr:
+      $gt:
+        - $_id.1
+        - $_id.2
+- $sort:
+    count: -1
+- $limit: 100
+- $project:
+    '1': $_id.1
+    '2': $_id.2
+    _id: 0
+    count: 1
+- $out: mba_combinations_products

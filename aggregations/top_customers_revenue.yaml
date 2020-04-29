@@ -1,0 +1,15 @@
+- $group:
+    _id: $email
+    count:
+      $sum: 1
+    total_revenue:
+      $sum:
+        $toDouble: $subtotal_price
+- $sort:
+    total_revenue: -1
+- $limit: 200
+- $addFields:
+    total_revenue:
+      $round:
+        - $total_revenue
+        - 2

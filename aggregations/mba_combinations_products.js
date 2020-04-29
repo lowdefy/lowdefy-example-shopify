@@ -9,8 +9,8 @@ db.getCollection("mba_basket").aggregate(
 			      input: '$products',
 			      as: 'item',
 			      in: {
-			          1: '$$item',
-			          2: { $filter: {
+			          '1': '$$item',
+			          '2': { $filter: {
 			             input: '$products',
 			             as: 'other',
 			             cond: { $ne: [ '$$other', '$$item' ] }
@@ -74,8 +74,8 @@ db.getCollection("mba_basket").aggregate(
 		{
 			$project: {
 			    _id: 0,
-			    1: '$_id.1',
-			    2: '$_id.2',
+			    '1': '$_id.1',
+			    '2': '$_id.2',
 			    count: 1  
 			}
 		},
