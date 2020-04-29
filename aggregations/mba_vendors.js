@@ -1,4 +1,4 @@
-db.getCollection("mba_combinations_types").aggregate(
+db.getCollection("mba_combinations_vendors").aggregate(
 
 	// Pipeline
 	[
@@ -36,7 +36,7 @@ db.getCollection("mba_combinations_types").aggregate(
 		// Stage 3
 		{
 			$lookup: {
-			    from: "mba_transactions_types",
+			    from: "mba_transactions_vendors",
 			    localField: "1",
 			    foreignField: "_id",
 			    as: "1_lu"
@@ -53,7 +53,7 @@ db.getCollection("mba_combinations_types").aggregate(
 		// Stage 5
 		{
 			$lookup: {
-			    from: "mba_transactions_types",
+			    from: "mba_transactions_vendors",
 			    localField: "2",
 			    foreignField: "_id",
 			    as: "2_lu"

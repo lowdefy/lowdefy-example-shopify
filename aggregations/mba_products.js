@@ -37,16 +37,16 @@ db.getCollection("mba_combinations_products").aggregate(
 		{
 			$lookup: {
 			    from: "mba_transactions_products",
-			    localField: "p1",
+			    localField: "1",
 			    foreignField: "_id",
-			    as: "p1"
+			    as: "1"
 			}
 		},
 
 		// Stage 4
 		{
 			$unwind: {
-			    path : "$p1",
+			    path : "$1",
 			}
 		},
 
@@ -54,47 +54,47 @@ db.getCollection("mba_combinations_products").aggregate(
 		{
 			$lookup: {
 			    from: "mba_transactions_products",
-			    localField: "p2",
+			    localField: "2",
 			    foreignField: "_id",
-			    as: "p2"
+			    as: "2"
 			}
 		},
 
 		// Stage 6
 		{
 			$unwind: {
-			    path : "$p2",
+			    path : "$2",
 			}
 		},
 
 		// Stage 7
 		{
 			$addFields: {
-			    "sup_p1": { $divide: [ '$p1.count', '$total_transactions.count' ] },
-			    "sup_p2": { $divide: [ '$p2.count', '$total_transactions.count' ] },
-			    "sup_p1_p2": { $divide: [ '$count', '$total_transactions.count' ] },   
+			    "sup_1": { $divide: [ '$1.count', '$total_transactions.count' ] },
+			    "sup_2": { $divide: [ '$2.count', '$total_transactions.count' ] },
+			    "sup_1_2": { $divide: [ '$count', '$total_transactions.count' ] },   
 			}
 		},
 
 		// Stage 8
 		{
 			$project: {
-			     p1: '$p1.title',
-			     p2: '$p2.title',
+			     1: '$1.title',
+			     2: '$2.title',
 			     count: 1,
-			     support_p1: { $round: [ { $multiply: [ '$sup_p1', 100 ] }, 2 ] },
-			     support_p2: { $round: [ { $multiply: [ '$sup_p2', 100 ] }, 2 ] },
-			     support_p1_p2: { $round: [ { $multiply: [ '$sup_p1_p2', 100 ] },  2 ] }, 
-			     confidence_p1_p2: { $round: [ { $multiply: [  { $divide: [ '$sup_p1_p2', '$sup_p1' ] }, 100 ] }, 2 ] },
-			     confidence_p2_p1: { $round: [ { $multiply: [ { $divide: [ '$sup_p1_p2', '$sup_p2' ] }, 100 ] }, 2 ] },
-			     lift: { $round: [{ $divide: [ '$sup_p1_p2', { $multiply: [ '$sup_p1', '$sup_p1' ] } ] }, 2 ] },
+			     support_1: { $round: [ { $multiply: [ '$sup_1', 100 ] }, 2 ] },
+			     support_2: { $round: [ { $multiply: [ '$sup_2', 100 ] }, 2 ] },
+			     support_1_2: { $round: [ { $multiply: [ '$sup_1_2', 100 ] },  2 ] }, 
+			     confidence_1_2: { $round: [ { $multiply: [  { $divide: [ '$sup_1_2', '$sup_1' ] }, 100 ] }, 2 ] },
+			     confidence_2_1: { $round: [ { $multiply: [ { $divide: [ '$sup_1_2', '$sup_2' ] }, 100 ] }, 2 ] },
+			     lift: { $round: [{ $divide: [ '$sup_1_2', { $multiply: [ '$sup_1', '$sup_1' ] } ] }, 2 ] },
 			}
 		},
 
 		// Stage 9
 		{
 			$sort: {
-			    'confidence_p1': -1,
+			    'support_1_2': -1,
 			    
 			}
 		},
