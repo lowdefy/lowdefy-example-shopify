@@ -1,0 +1,55 @@
+id: top_customers
+type: MongoDBAggregation
+connectionId: orders_mdb
+properties:
+  pipeline:
+    - $match:
+        test: false
+        financial_status: paid
+    - $addFields:
+        start_month:
+          _state: start_month
+        end_month:
+          $dateFromParts:
+            year:
+              $year:
+                _state: end_month
+            month:
+              $add:
+                - $month:
+                    _state: end_month
+                - 1
+    - $match:
+        $expr:
+          $and:
+            - $gte:
+              - $created_at_date
+              - $start_month
+            - $lt:
+              - $created_at_date
+              - $end_month
+    - $group:
+        _id: $email
+        first_name:
+          $first: $customer.first_name
+        last_name:
+          $first: $customer.last_name
+        total_orders:
+          $sum: 1
+        total_revenue:
+          $sum:
+            $toDouble: $subtotal_price
+    - $sort:
+        total_revenue: -1
+    - $limit: 200
+    - $addFields:
+        name:
+          $concat:
+            - $first_name
+            - ' '
+            - $last_name
+        total_revenue:
+          $round:
+            - $total_revenue
+            - 2
+        email: $_id

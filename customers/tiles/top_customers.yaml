@@ -1,0 +1,43 @@
+id: card_top_customers
+type: Card
+blocks:
+  - id: title_top_customers
+    type: Title
+    properties:
+      content: Top Customers
+      level: 4
+  - id: description_top_customers
+    type: Paragraph
+    properties:
+      content: Top 200 customers by total revenue. Click on the row for a more detailed customer view.
+  - id: table_regions
+    type: AgGrid
+    properties:
+      rowData:
+        _request: top_customers
+      columnDefs:
+        - headerName: Name
+          field: name
+          width: 200
+        - headerName: Email
+          field: email
+          width: 200
+        - headerName: Orders
+          field: total_orders
+          width: 200
+        - headerName: Revenue
+          field: total_revenue
+          width: 100
+      defaultColDef:
+        filter: true
+        resizable: true
+        sortable: true
+    actions:
+      onRowClick:
+        - id: link
+          type: link()
+          params:
+            pageId: customer
+            input:
+              email:
+                _args: row._id

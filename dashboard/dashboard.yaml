@@ -11,7 +11,6 @@ requests:
   - _ref: dashboard/requests/day_hour_heatmap.yaml
   - _ref: dashboard/requests/referring_site.yaml
   - _ref: dashboard/requests/referring_site_detail.yaml
-  - _ref: dashboard/requests/number_orders.yaml
   - _ref: dashboard/requests/top_products.yaml
   - _ref: dashboard/requests/top_product_types.yaml
   - _ref: dashboard/requests/top_product_combinations.yaml
@@ -54,7 +53,6 @@ blocks:
         - _ref: shared/filter.yaml
         - _ref: dashboard/tiles/orders_per_month.yaml
         - _ref: dashboard/tiles/revenue_per_month.yaml
-        - _ref: dashboard/tiles/number_orders.yaml
         - _ref: dashboard/tiles/day_hour_heatmap_orders.yaml
         - _ref: dashboard/tiles/day_hour_heatmap_revenue.yaml
         - _ref: dashboard/tiles/accepts_marketing_pie.yaml

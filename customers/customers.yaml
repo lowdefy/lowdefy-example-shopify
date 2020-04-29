@@ -5,6 +5,9 @@ properties:
 
 requests:
   - _ref: shared/init.yaml
+  - _ref: customers/requests/orders_per_customer.yaml
+  - _ref: customers/requests/top_customers.yaml
+
 actions:
   onInit:
     - id: fetch_init
@@ -39,4 +42,6 @@ blocks:
         maxWidth: 1300px
       blocks:
         - _ref: shared/filter.yaml
+        # - _ref: customers/tiles/orders_per_customer.yaml
+        - _ref: customers/tiles/top_customers.yaml
 

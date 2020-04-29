@@ -1,0 +1,32 @@
+id: customer_details
+type: MongoDBAggregation
+connectionId: orders_mdb
+properties:
+  pipeline:
+    - $match:
+        test: false
+        financial_status: paid
+    - $match:
+        email:
+          _input: email
+    - $sort:
+        created_at_date: -1
+    - $addFields:
+        line_items:
+          $map:
+            input: $line_items
+            in:
+              title: $$this.title
+              quantity: $$this.quantity
+              vendor: $$this.vendor
+              price: $$this.price
+    - $group:
+        _id: '0'
+        customer:
+          $first: $customer
+        orders:
+          $push:
+            date: $created_at_date
+            line_items: $line_items
+            financial_status: $financial_status
+            total_price: $total_price

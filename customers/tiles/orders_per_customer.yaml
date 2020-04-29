@@ -1,20 +1,20 @@
-id: card_number_orders
+id: card_orders_per_customer
 type: Card
 style:
   justifyItems: center
 blocks:
-  - id: title_number_orders
+  - id: title_orders_per_customer
     type: Title
     properties:
-      content: Number of Orders per User
+      content: Number of Orders per Customer
       level: 4
-  - id: chart_number_orders
+  - id: chart_orders_per_customer
     type: AmCharts4XY
     style:
       maxWidth: 600
     properties:
       data:
-        _request: number_orders
+        _request: orders_per_customer
       xAxes:
         - type: CategoryAxis
           title:
@@ -35,6 +35,6 @@ blocks:
             categoryX: number_orders
             valueY: count
           columns:
-            tooltipText: "{valueY} users made {categoryX} orders"
+            tooltipText: "{valueY} customers made {categoryX} orders"
       cursor:
         type: XYCursor

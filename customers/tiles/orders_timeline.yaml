@@ -1,0 +1,41 @@
+id: orders_timeline
+type: Card
+blocks:
+  - id: order_timeline_title
+    type: Title
+    properties:
+      content: Orders
+      level: 4
+  - id: orders
+    type: Timeline
+    properties:
+      data:
+        _mql_aggregate:
+          on:
+            _state: orders
+          pipeline:
+            - $project:
+                icon:
+                  $cond:
+                    - { $eq: [ '$financial_status', paid ] }
+                    - { name: CheckCircleTwoTone, twoToneColor: '#52c41a' }
+                    - { name: CloseCircleTwoTone, twoToneColor: '#ff4d4f' }
+                        
+
+    blocks:
+      - id: orders.$.timeline_item
+        type: Markdown
+        properties:
+          content:
+            _nunjucks: 
+              template: |
+                #### {{ date | date("Do MMM YYYY") }} {{ "Voided" if  financial_status === 'voided' }} {{ "Pending" if  financial_status === 'pending' }} {{ "Partially Refunded" if  financial_status === 'partially_refunded' }}
+                
+                {% for item in line_items %}
+                - **{{ item.quantity }}**: {{ item.title }}
+                {% endfor %}
+                ##### Total {{ total_price }}
+              on:
+                _state: orders.$
+            
+

@@ -1,0 +1,67 @@
+id: customer_description
+type: Card
+blocks:
+  - id: name
+    type: Title
+    properties:
+      content:
+        _nunjucks: '{{ customer.first_name }} {{ customer.last_name }}'
+      level: 3
+  - id: email
+    type: Paragraph
+    properties:
+      content:
+        _state: customer.email
+  - id: statistic_total_orders
+    type: Statistic
+    style:
+      --span: 4
+    properties:
+      title: Total Orders
+      IconSuffix: ShoppingOutlined
+      value:
+        _state: customer.orders_count
+      precision: 0
+  - id: statistic_total_revenue
+    type: Statistic
+    style:
+      --span: 4
+    properties:
+      title: Total Spent
+      IconSuffix: BankOutlined
+      prefix: R
+      value:
+        _state: customer.total_spent
+      precision: 2
+  - id: statistic_customer_since
+    type: Statistic
+    style:
+      --span: 4
+    properties:
+      title: Customer Since
+      IconSuffix: CalendarOutlined
+      value:
+        _date:
+          _state: customer.created_at
+      formatter:
+        type: date
+        properties:
+          format: 'Do MMM YYYY'
+  - id: address
+    type: Html
+    style:
+      fontSize: '14px'
+    properties:
+      html:
+        _nunjucks: |
+          <p>
+          {{ customer.default_address.address1 }}<br/>
+          {% if customer.default_address.address2 %}
+            {{ customer.default_address.address2 }}<br/>
+          {% endif %}
+          {{ customer.default_address.city }}<br/>
+          {{ customer.default_address.province }}<br/>
+          {{ customer.default_address.country }}
+          </p>
+
+

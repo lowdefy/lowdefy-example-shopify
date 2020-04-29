@@ -1,0 +1,22 @@
+- $match:
+    email: reg.maher@worldonline.co.za
+- $sort:
+    created_at_date: -1
+- $addFields:
+    line_items:
+      $map:
+        input: $line_items
+        in:
+          title: $$this.title
+          quantity: $$this.quantity
+          vendor: $$this.vendor
+          price: $$this.price
+- $group:
+    _id: '0'
+    customer:
+      $first: $customer
+    orders:
+      $push:
+        line_items: $line_items
+        financial_status: $financial_status
+        subtotal_price: $total_price

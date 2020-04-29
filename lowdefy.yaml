@@ -131,5 +131,6 @@ menus:
 pages:
   - _ref: dashboard/dashboard.yaml
   - _ref: customers/customers.yaml
+  - _ref: customers/customer.yaml
   - _ref: api/update-orders.yaml
   - _ref: api/update-products.yaml

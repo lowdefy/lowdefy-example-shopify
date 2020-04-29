@@ -1,0 +1,47 @@
+id: customer
+type: PageHeaderMenu
+properties:
+  title: Customer
+actions:
+  onEnter:
+    - id: return_if_input_null
+      type: link()
+      params:
+        pageId: customers
+      skip:
+        _not:
+          _eq:
+            - _input: email
+            - null
+    - id: fetch_customer_details
+      type: fetch()
+      params: customer_details
+      skip:
+        _eq:
+          - _input: email
+          - null
+    - id: set_customer_details
+      type: setState()
+      params:
+        _get:
+          key: '0'
+          on:
+            _request: customer_details
+      skip:
+        _eq:
+          - _input: email
+          - null
+requests:
+  - _ref: 'customers/requests/customer_details.yaml'
+
+blocks:
+  Content:
+    - id: content_grid
+      type: Box
+      style:
+        maxWidth: 1300px
+      blocks:
+        - _ref: customers/tiles/customer_description.yaml
+        - _ref: customers/tiles/orders_timeline.yaml
+                                
+
