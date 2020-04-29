@@ -5,8 +5,8 @@ db.getCollection("mba_basket").aggregate(
 		// Stage 1
 		{
 			$project: {
-			    '1': '$types',
-			    '2': '$types'
+			    '1': '$vendors',
+			    '2': '$vendors'
 			    
 			}
 		},
@@ -74,7 +74,7 @@ db.getCollection("mba_basket").aggregate(
 
 		// Stage 9
 		{
-			$out: "mba_combinations_types"
+			$out: "mba_combinations_vendors"
 		},
 
 	]

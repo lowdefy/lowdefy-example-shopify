@@ -9,8 +9,8 @@ db.getCollection("mba_basket").aggregate(
 			      input: '$products',
 			      as: 'item',
 			      in: {
-			          id: '$$item',
-			          other: { $filter: {
+			          1: '$$item',
+			          2: { $filter: {
 			             input: '$products',
 			             as: 'other',
 			             cond: { $ne: [ '$$other', '$$item' ] }
@@ -30,7 +30,7 @@ db.getCollection("mba_basket").aggregate(
 		// Stage 3
 		{
 			$unwind: {
-			    path: '$products.other'
+			    path: '$products.2'
 			}
 		},
 
@@ -45,8 +45,8 @@ db.getCollection("mba_basket").aggregate(
 		// Stage 5
 		{
 			$match: {
-			    '_id.id': { $ne: null },
-			    '_id.other': { $ne: null }, 
+			    '_id.1': { $ne: null },
+			    '_id.2': { $ne: null }, 
 			    
 			}
 		},
@@ -54,7 +54,7 @@ db.getCollection("mba_basket").aggregate(
 		// Stage 6
 		{
 			$match: {
-			    $expr: { $gt: ['$_id.id', '$_id.other'] }
+			    $expr: { $gt: ['$_id.1', '$_id.2'] }
 			}
 		},
 
@@ -74,8 +74,8 @@ db.getCollection("mba_basket").aggregate(
 		{
 			$project: {
 			    _id: 0,
-			    p1: '$_id.id',
-			    p2: '$_id.other',
+			    1: '$_id.1',
+			    2: '$_id.2',
 			    count: 1  
 			}
 		},
