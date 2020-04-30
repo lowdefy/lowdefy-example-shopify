@@ -35,6 +35,56 @@ connections:
       read: true
       write: true
 
+  - id: products_mdb
+    type: MongoDBCollection
+    properties:
+      databaseUri:
+        _secret: shopify_mdb
+      databaseName: shopify
+      collection: products
+      read: true
+      write: true
+
+  - id: products_temp_mdb
+    type: MongoDBCollection
+    properties:
+      databaseUri:
+        _secret: shopify_mdb
+      databaseName: shopify
+      collection: products_temp
+      read: true
+      write: true
+
+  - id: mba_combinations_products_mdb
+    type: MongoDBCollection
+    properties:
+      databaseUri:
+        _secret: shopify_mdb
+      databaseName: shopify
+      collection: mba_combinations_products
+      read: true
+      write: false
+
+  - id: mba_combinations_types_mdb
+    type: MongoDBCollection
+    properties:
+      databaseUri:
+        _secret: shopify_mdb
+      databaseName: shopify
+      collection: mba_combinations_types
+      read: true
+      write: false
+
+  - id: mba_combinations_vendors_mdb
+    type: MongoDBCollection
+    properties:
+      databaseUri:
+        _secret: shopify_mdb
+      databaseName: shopify
+      collection: mba_combinations_vendors
+      read: true
+      write: false
+
   - id: shopify_orders
     type: AxiosHttp
     properties:
@@ -56,26 +106,6 @@ connections:
         _secret: shopify_api_auth
       params:
         status: any
-
-  - id: products_mdb
-    type: MongoDBCollection
-    properties:
-      databaseUri:
-        _secret: shopify_mdb
-      databaseName: shopify
-      collection: products
-      read: true
-      write: true
-
-  - id: products_temp_mdb
-    type: MongoDBCollection
-    properties:
-      databaseUri:
-        _secret: shopify_mdb
-      databaseName: shopify
-      collection: products_temp
-      read: true
-      write: true
 
   - id: shopify_products
     type: AxiosHttp
@@ -112,6 +142,12 @@ menus:
         properties:
           title: Customers
           Icon: TeamOutlined
+      - id: basket_analysis
+        type: MenuLink
+        pageId: basket-analysis
+        properties:
+          title: Basket Analysis
+          Icon: ShoppingOutlined
       - id: admin_group
         type: MenuGroup
         properties:
@@ -132,5 +168,6 @@ pages:
   - _ref: dashboard/dashboard.yaml
   - _ref: customers/customers.yaml
   - _ref: customers/customer.yaml
+  - _ref: basket_analysis/basket-analysis.yaml
   - _ref: api/update-orders.yaml
   - _ref: api/update-products.yaml

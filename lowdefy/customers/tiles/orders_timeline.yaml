@@ -23,19 +23,37 @@ blocks:
                         
 
     blocks:
-      - id: orders.$.timeline_item
+      - id: orders.$.timeline_title
         type: Markdown
         properties:
           content:
             _nunjucks: 
               template: |
                 #### {{ date | date("Do MMM YYYY") }} {{ "Voided" if  financial_status === 'voided' }} {{ "Pending" if  financial_status === 'pending' }} {{ "Partially Refunded" if  financial_status === 'partially_refunded' }}
-                
-                {% for item in line_items %}
-                - **{{ item.quantity }}**: {{ item.title }}
-                {% endfor %}
+              on:
+                _state: orders.$
+      - id: orders.$.timeline_line_items
+        type: Descriptions
+        style:
+          --span: 6
+        properties:
+          bordered: true
+          column: 1
+          size: small
+          items:
+            _mql_aggregate:
+              on:
+                _state: orders.$.line_items   
+              pipeline:
+                - $project:
+                    label: $title
+                    value: $quantity    
+      - id: orders.$.timeline_total
+        type: Markdown
+        properties:
+          content:
+            _nunjucks: 
+              template: |
                 ##### Total {{ total_price }}
               on:
                 _state: orders.$
-            
-

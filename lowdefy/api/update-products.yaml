@@ -1,5 +1,5 @@
 id: update-products
-type: PageHeaderMenu
+type: PageSiderMenu
 properties:
   title: Update Products
   Breadcrumb:

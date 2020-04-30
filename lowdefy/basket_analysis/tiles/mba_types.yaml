@@ -1,0 +1,45 @@
+id: mba_types
+type: Card
+blocks:
+  - id: title_mba_types
+    type: Title
+    properties:
+      content: Market Basket Analysis - Types
+      level: 4
+  - id: table_mba_types
+    type: AgGrid
+    properties:
+      rowData:
+        _request: mba_types
+      columnDefs:
+        - headerName: Type 1
+          field: '1'
+          width: 100
+        - headerName: Type 2
+          field: '2'
+          width: 100
+        - headerName: Support 1
+          field: support_1
+          width: 100
+        - headerName: Support 2
+          field: support_2
+          width: 100
+        - headerName: Support 1 & 2
+          field: support_1_2
+          width: 100
+        - headerName: Confidence 1 => 2
+          field: confidence_1_2
+          width: 100
+        - headerName: Confidence 2 => 1
+          field: confidence_2_1
+          width: 100
+        - headerName: Lift
+          field: lift
+          width: 100
+        - headerName: Count
+          field: count
+          width: 100
+      defaultColDef:
+        filter: true
+        resizable: true
+        sortable: true

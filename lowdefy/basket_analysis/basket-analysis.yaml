@@ -1,0 +1,24 @@
+id: basket-analysis
+type: PageSiderMenu
+public: true
+properties:
+  title: Basket Analysis
+
+requests:
+  - _ref: basket_analysis/requests/mba_products.yaml
+  - _ref: basket_analysis/requests/mba_types.yaml
+  - _ref: basket_analysis/requests/mba_vendors.yaml
+
+blocks:
+  Content:
+    - id: content_grid
+      type: Box
+      style:
+        maxWidth: 1300px
+      blocks:
+        - _ref: basket_analysis/tiles/mba_description.yaml
+        - _ref: basket_analysis/tiles/mba_products.yaml
+        - _ref: basket_analysis/tiles/mba_vendors.yaml
+        - _ref: basket_analysis/tiles/mba_types.yaml
+
+

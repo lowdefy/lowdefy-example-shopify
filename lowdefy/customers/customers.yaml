@@ -1,38 +1,38 @@
 id: customers
-type: PageHeaderMenu
+type: PageSiderMenu
 properties:
   title: Customers
 
 requests:
-  - _ref: shared/init.yaml
+  # - _ref: shared/init.yaml
   - _ref: customers/requests/orders_per_customer.yaml
   - _ref: customers/requests/top_customers.yaml
 
-actions:
-  onInit:
-    - id: fetch_init
-      type: fetch()
-      params: init
-    - id: set_init
-      type: setState()
-      params:
-        start_month:
-          _date: '2019-03-01'
-        end_month:
-          _get:
-            key: 0.end_month
-            on:
-              _request: init
-        min_month:
-          _get:
-            key: 0.start_month
-            on:
-              _request: init
-        max_month:
-          _get:
-            key: 0.end_month
-            on:
-              _request: init
+# actions:
+#   onInit:
+#     - id: fetch_init
+#       type: fetch()
+#       params: init
+#     - id: set_init
+#       type: setState()
+#       params:
+#         start_month:
+#           _date: '2019-03-01'
+#         end_month:
+#           _get:
+#             key: 0.end_month
+#             on:
+#               _request: init
+#         min_month:
+#           _get:
+#             key: 0.start_month
+#             on:
+#               _request: init
+#         max_month:
+#           _get:
+#             key: 0.end_month
+#             on:
+#               _request: init
 
 blocks:
   Content:
@@ -41,7 +41,7 @@ blocks:
       style:
         maxWidth: 1300px
       blocks:
-        - _ref: shared/filter.yaml
-        # - _ref: customers/tiles/orders_per_customer.yaml
+        # - _ref: shared/filter.yaml
         - _ref: customers/tiles/top_customers.yaml
+        - _ref: customers/tiles/orders_per_customer.yaml
 

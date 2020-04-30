@@ -6,28 +6,28 @@ properties:
     - $match:
         test: false
         financial_status: paid
-    - $addFields:
-        start_month:
-          _state: start_month
-        end_month:
-          $dateFromParts:
-            year:
-              $year:
-                _state: end_month
-            month:
-              $add:
-                - $month:
-                    _state: end_month
-                - 1
-    - $match:
-        $expr:
-          $and:
-            - $gte:
-              - $created_at_date
-              - $start_month
-            - $lt:
-              - $created_at_date
-              - $end_month
+    # - $addFields:
+    #     start_month:
+    #       _state: start_month
+    #     end_month:
+    #       $dateFromParts:
+    #         year:
+    #           $year:
+    #             _state: end_month
+    #         month:
+    #           $add:
+    #             - $month:
+    #                 _state: end_month
+    #             - 1
+    # - $match:
+    #     $expr:
+    #       $and:
+    #         - $gte:
+    #           - $created_at_date
+    #           - $start_month
+    #         - $lt:
+    #           - $created_at_date
+    #           - $end_month
     - $group:
         _id: $email
         count:

@@ -1,0 +1,26 @@
+id: mba_description_card
+type: Card
+blocks:
+  - id: mba_description
+    type: Markdown
+    properties:
+      content: |
+        #### Market Basket Analysis
+
+        Market basket analysis is a methodology used to find associations between different products in a set of transactions.
+        
+        ##### Support
+
+        The support for a product (or association of products) is the percentage of orders that contain that product, out of all orders.
+        
+        ##### Confidence
+
+        The confidence for a association is the percentage of orders that contain product 1 and two, out of all orders that contain product 1. This can be interpreted as the chance that an order will contain product 2, given that the order contains product 1.
+        
+        ##### Lift
+
+        The lift is an indicator if the association is independent or correlated, given the frequency that products are purchased individually.
+
+        - If the lift is 1, it means that the products are purchased independently.
+        - If the lift is greater than 1, it means there is a positive correlation between products. Customers who buy one product are more likely to the second product.
+        - If the lift is less than 1, it means there is a negative correlation between products. Customers who buy one product are less likely to the second product.

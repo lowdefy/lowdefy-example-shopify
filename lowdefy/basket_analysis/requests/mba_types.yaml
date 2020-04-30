@@ -1,0 +1,97 @@
+id: mba_types
+type: MongoDBAggregation
+connectionId: mba_combinations_types_mdb
+properties:
+  pipeline:
+    - $lookup:
+        from: orders
+        let: {}
+        pipeline:
+          - $match:
+              financial_status: paid
+          - $group:
+              _id: 0
+              count:
+                $sum: 1
+        as: total_transactions
+    - $unwind:
+        path: $total_transactions
+    - $lookup:
+        from: mba_transactions_types
+        localField: '1'
+        foreignField: _id
+        as: 1_lu
+    - $unwind:
+        path: $1_lu
+    - $lookup:
+        from: mba_transactions_types
+        localField: '2'
+        foreignField: _id
+        as: 2_lu
+    - $unwind:
+        path: $2_lu
+    - $addFields:
+        sup_1:
+          $divide:
+            - $1_lu.count
+            - $total_transactions.count
+        sup_2:
+          $divide:
+            - $2_lu.count
+            - $total_transactions.count
+        sup_1_2:
+          $divide:
+            - $count
+            - $total_transactions.count
+    - $project:
+        '1': $1
+        '2': $2
+        count: 1
+        support_1:
+          $round:
+            - $multiply:
+                - $sup_1
+                - 100
+            - 2
+        support_2:
+          $round:
+            - $multiply:
+                - $sup_2
+                - 100
+            - 2
+        support_1_2:
+          $round:
+            - $multiply:
+                - $sup_1_2
+                - 100
+            - 2
+        confidence_1_2:
+          $round:
+            - $multiply:
+                - $divide:
+                    - $sup_1_2
+                    - $sup_1
+                - 100
+            - 0
+        confidence_2_1:
+          $round:
+            - $multiply:
+                - $divide:
+                    - $sup_1_2
+                    - $sup_2
+                - 100
+            - 0
+        lift:
+          $round:
+            - $divide:
+                - $sup_1_2
+                - $multiply:
+                    - $sup_1
+                    - $sup_1
+            - 4
+    - $match:
+        support_1_2:
+            $gte: 0.1
+    - $sort:
+        support_1_2: -1
+

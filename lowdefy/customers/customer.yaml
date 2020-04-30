@@ -1,5 +1,5 @@
 id: customer
-type: PageHeaderMenu
+type: PageSiderMenu
 properties:
   title: Customer
 actions:

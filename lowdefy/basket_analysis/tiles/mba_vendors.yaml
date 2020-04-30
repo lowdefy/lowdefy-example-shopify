@@ -1,0 +1,45 @@
+id: mba_vendors
+type: Card
+blocks:
+  - id: title_mba_vendors
+    type: Title
+    properties:
+      content: Market Basket Analysis - Vendors
+      level: 4
+  - id: table_mba_vendors
+    type: AgGrid
+    properties:
+      rowData:
+        _request: mba_vendors
+      columnDefs:
+        - headerName: Vendor 1
+          field: '1'
+          width: 200
+        - headerName: Vendor 2
+          field: '2'
+          width: 200
+        - headerName: Support 1
+          field: support_1
+          width: 100
+        - headerName: Support 2
+          field: support_2
+          width: 100
+        - headerName: Support 1 & 2
+          field: support_1_2
+          width: 100
+        - headerName: Confidence 1 => 2
+          field: confidence_1_2
+          width: 100
+        - headerName: Confidence 2 => 1
+          field: confidence_2_1
+          width: 100
+        - headerName: Lift
+          field: lift
+          width: 100
+        - headerName: Count
+          field: count
+          width: 100
+      defaultColDef:
+        filter: true
+        resizable: true
+        sortable: true
