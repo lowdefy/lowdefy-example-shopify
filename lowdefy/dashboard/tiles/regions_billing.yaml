@@ -1,0 +1,37 @@
+id: card_regions_billing
+type: Card
+blocks:
+  - id: title_regions_billing
+    type: Title
+    properties:
+      content: Sales by Region (Billing Address)
+      level: 4
+  - id: table_regions_billing
+    type: AgGrid
+    properties:
+      rowData:
+        _request: regions_billing
+      columnDefs:
+        - headerName: Country
+          field: country
+          width: 200
+        - headerName: Province
+          field: province
+          width: 200
+        - headerName: Orders
+          field: total_orders
+          width: 100
+        - headerName: Revenue
+          field: total_revenue
+          width: 100
+        - headerName: Customers
+          field: total_customers
+          width: 100
+      defaultColDef:
+        filter: true
+        resizable: true
+        sortable: true
+  - id: description_regions_billing
+    type: Paragraph
+    properties:
+      content: Region determined by billing address.

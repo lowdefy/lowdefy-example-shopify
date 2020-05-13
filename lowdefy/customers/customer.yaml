@@ -2,6 +2,11 @@ id: customer
 type: PageSiderMenu
 properties:
   title: Customer
+  Breadcrumb:
+    list:
+      - label: Customers
+        pageId: customers
+      - label: Customer
 actions:
   onEnter:
     - id: return_if_input_null

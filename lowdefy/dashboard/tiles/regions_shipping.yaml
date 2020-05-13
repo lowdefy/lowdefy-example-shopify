@@ -1,16 +1,16 @@
-id: card_regions
+id: card_regions_shipping
 type: Card
 blocks:
-  - id: title_regions
+  - id: title_regions_shipping
     type: Title
     properties:
-      content: Sales by Region
+      content: Sales by Region (Shipping Address)
       level: 4
-  - id: table_regions
+  - id: table_regions_shipping
     type: AgGrid
     properties:
       rowData:
-        _request: regions
+        _request: regions_shipping
       columnDefs:
         - headerName: Country
           field: country
@@ -31,3 +31,7 @@ blocks:
         filter: true
         resizable: true
         sortable: true
+  - id: description_regions_shipping
+    type: Paragraph
+    properties:
+      content: Region determined by shipping address.

@@ -1,4 +1,4 @@
-id: regions
+id: regions_shipping
 type: MongoDBAggregation
 connectionId: orders_mdb
 properties:
@@ -30,8 +30,8 @@ properties:
               - $end_month      
     - $group:
         _id:
-          province: $billing_address.province
-          country: $billing_address.country
+          province: $shipping_address.province
+          country: $shipping_address.country
         total_orders:
           $sum: 1
         total_revenue:
