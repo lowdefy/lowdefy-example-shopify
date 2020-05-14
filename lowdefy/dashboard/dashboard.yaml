@@ -13,7 +13,6 @@ requests:
   - _ref: dashboard/requests/referring_site_detail.yaml
   - _ref: dashboard/requests/top_products.yaml
   - _ref: dashboard/requests/top_product_types.yaml
-  - _ref: dashboard/requests/top_product_combinations.yaml
   - _ref: dashboard/requests/regions_shipping.yaml
   - _ref: dashboard/requests/regions_billing.yaml
   - _ref: dashboard/requests/months.yaml
@@ -62,6 +61,5 @@ blocks:
         - _ref: dashboard/tiles/referring_site_detail.yaml
         - _ref: dashboard/tiles/top_products.yaml
         - _ref: dashboard/tiles/top_product_types.yaml
-        - _ref: dashboard/tiles/top_product_combinations.yaml
         - _ref: dashboard/tiles/regions_billing.yaml
         - _ref: dashboard/tiles/regions_shipping.yaml

@@ -21,24 +21,45 @@ blocks:
         - headerName: Support 1
           field: support_1
           width: 100
+          type: numericColumn
+          valueFormatter:
+            _global: decimal_format
         - headerName: Support 2
           field: support_2
           width: 100
+          type: numericColumn
+          valueFormatter:
+            _global: decimal_format
         - headerName: Support 1 & 2
           field: support_1_2
           width: 100
+          type: numericColumn
+          valueFormatter:
+            _global: decimal_format
         - headerName: Confidence 1 => 2
           field: confidence_1_2
           width: 100
+          type: numericColumn
+          valueFormatter:
+            _global: decimal_format
         - headerName: Confidence 2 => 1
           field: confidence_2_1
           width: 100
+          type: numericColumn
+          valueFormatter:
+            _global: decimal_format
         - headerName: Lift
           field: lift
           width: 100
+          type: numericColumn
+          valueFormatter:
+            _global: decimal_format
         - headerName: Count
           field: count
           width: 100
+          type: numericColumn
+          valueFormatter:
+            _global: integer_format
       defaultColDef:
         filter: true
         resizable: true

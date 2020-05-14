@@ -25,9 +25,15 @@ blocks:
         - headerName: Orders
           field: total_orders
           width: 200
+          type: numericColumn
+          valueFormatter:
+            _global: integer_format
         - headerName: Revenue
           field: total_revenue
           width: 100
+          type: numericColumn
+          valueFormatter:
+            _global: currency_format
       defaultColDef:
         filter: true
         resizable: true

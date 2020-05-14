@@ -44,7 +44,7 @@ blocks:
         _date:
           _state: customer.created_at
       formatter:
-        type: date
+        type: momentFormat
         properties:
           format: 'Do MMM YYYY'
   - id: address

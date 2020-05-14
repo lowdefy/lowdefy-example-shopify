@@ -18,12 +18,21 @@ blocks:
         - headerName: Quantity
           field: quantity
           width: 100
+          type: numericColumn
+          valueFormatter:
+            _global: integer_format
         - headerName: Orders
           field: count
           width: 100
+          type: numericColumn
+          valueFormatter:
+            _global: integer_format
         - headerName: Revenue
           field: revenue
           width: 100
+          type: numericColumn
+          valueFormatter:
+            _global: currency_format
         - headerName: Product Type
           field: product_type
           width: 200

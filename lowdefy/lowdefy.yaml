@@ -4,6 +4,25 @@ config:
   authHomePageId: dashboard
   publicHomePageId: dashboard
 
+global:
+  currency_format:
+    type: intlNumberFormat
+    properties:
+      locale: en-ZA
+      options:
+        style: currency
+        currency: ZAR
+  integer_format:
+    type: intlNumberFormat
+    properties:
+      options:
+        maximumFractionDigits: 0
+  decimal_format:
+    type: intlNumberFormat
+    properties:
+      options:
+        maximumFractionDigits: 3
+
 connections:
   - id: api_calls_mdb
     type: MongoDBCollection

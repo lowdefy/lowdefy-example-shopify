@@ -1,4 +1,4 @@
-id: regions_shipping
+id: regions_billing
 type: MongoDBAggregation
 connectionId: orders_mdb
 properties:

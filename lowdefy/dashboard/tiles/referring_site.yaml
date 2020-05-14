@@ -25,6 +25,9 @@ blocks:
         - headerName: Count
           field: count
           width: 100
+          type: numericColumn
+          valueFormatter:
+            _global: integer_format
       defaultColDef:
         filter: true
         resizable: true
