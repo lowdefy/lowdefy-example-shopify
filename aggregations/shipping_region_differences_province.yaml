@@ -1,0 +1,23 @@
+- $match:
+    billing_address.country: South Africa
+- $match:
+    $expr:
+      $ne:
+        - $billing_address.province
+        - $shipping_address.province
+- $group:
+    _id:
+      bap: $billing_address.province
+      sap: $shipping_address.province
+      sac: $shipping_address.city
+    count:
+      $sum: 1
+    total_revenue:
+      $sum:
+        $toDouble: $subtotal_price
+- $addFields:
+    billing_address_province: $_id.bap
+    shipping_address_province: $_id.sap
+    shipping_address_city: $_id.sac
+- $sort:
+    count: -1

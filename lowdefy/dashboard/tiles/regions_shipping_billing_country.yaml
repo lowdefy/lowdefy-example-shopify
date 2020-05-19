@@ -1,0 +1,50 @@
+id: card_regions_shipping_billing_country
+type: Card
+blocks:
+  - id: title_regions_shipping_billing_country
+    type: Title
+    properties:
+      content: Shipping and Billing Address Comparison by Country 
+      level: 4
+  - id: table_regions_shipping_billing_country
+    type: AgGrid
+    properties:
+      theme: basic
+      rowData:
+        _request: regions_shipping_billing_country
+      columnDefs:
+        - headerName: Billing Country
+          field: billing_address_country
+          width: 200
+        - headerName: Shipping Country
+          field: shipping_address_country
+          width: 200
+        - headerName: Shipping Province
+          field: shipping_address_province
+          width: 200
+        - headerName: Orders
+          field: total_orders
+          width: 150
+          type: numericColumn
+          valueFormatter:
+            _global: integer_format
+        - headerName: Revenue
+          field: total_revenue
+          width: 200
+          type: numericColumn
+          valueFormatter:
+            _global: currency_format
+        - headerName: Customers
+          field: total_customers
+          width: 150
+          type: numericColumn
+          valueFormatter:
+            _global: integer_format
+      defaultColDef:
+        filter: true
+        resizable: true
+        sortable: true 
+  - id: description_regions_shipping_billing_country
+    type: Paragraph
+    properties:
+      content: Rows are counted by unique combinations of Billing Country, Shipping Country and Shipping Province.

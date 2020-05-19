@@ -1,0 +1,54 @@
+id: regions_shipping_billing_province
+type: MongoDBAggregation
+connectionId: orders_mdb
+properties:
+  pipeline:
+    - $match:
+        test: false
+        financial_status: paid
+    - $addFields:
+        start_month:
+          _state: start_month
+        end_month:
+          $dateFromParts:
+            year:
+              $year:
+                _state: end_month
+            month:
+              $add:
+                - $month:
+                    _state: end_month
+                - 1
+    - $match:
+        $expr:
+          $and:
+            - $gte:
+              - $created_at_date
+              - $start_month
+            - $lt:
+              - $created_at_date
+              - $end_month      
+    - $group:
+        _id:
+          bap: $billing_address.province
+          sap: $shipping_address.province
+          sac: $shipping_address.city
+        total_orders:
+          $sum: 1
+        total_revenue:
+          $sum:
+            $toDouble: $subtotal_price
+        total_customers:
+          $addToSet: $email
+    - $project:
+        _id: 0
+        billing_address_province: $_id.bap
+        shipping_address_province: $_id.sap
+        shipping_address_city: $_id.sac
+        total_orders: 1
+        total_revenue: 1
+        total_customers:
+          $size: $total_customers
+    - $sort:
+        total_orders: -1
+

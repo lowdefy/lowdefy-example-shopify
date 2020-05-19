@@ -1,0 +1,18 @@
+- $match:
+    $expr:
+      $ne:
+        - $billing_address.country
+        - $shipping_address.country
+- $group:
+    _id:
+      bac: $billing_address.country
+      sac: $shipping_address.country
+      sap: $shipping_address.province
+    count:
+      $sum: 1
+- $addFields:
+    billing_address_country: $_id.bac
+    shipping_address_country: $_id.sac
+    shipping_address_province: $_id.sap
+- $sort:
+    count: -1
