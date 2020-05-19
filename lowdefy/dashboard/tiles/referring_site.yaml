@@ -13,18 +13,19 @@ blocks:
   - id: table_referring_site
     type: AgGrid
     properties:
+      theme: basic
       rowData:
         _request: referring_site
       columnDefs:
         - headerName: Referring Site
           field: referring_domain
-          width: 200
+          width: 150
         - headerName: Landing Path
           field: landing_site_path
-          width: 200
+          width: 150
         - headerName: Count
           field: count
-          width: 100
+          width: 150
           type: numericColumn
           valueFormatter:
             _global: integer_format

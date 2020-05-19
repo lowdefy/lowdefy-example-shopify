@@ -13,15 +13,16 @@ blocks:
   - id: table_regions
     type: AgGrid
     properties:
+      theme: basic
       rowData:
         _request: top_customers
       columnDefs:
         - headerName: Name
           field: name
-          width: 200
+          width: 300
         - headerName: Email
           field: email
-          width: 200
+          width: 300
         - headerName: Orders
           field: total_orders
           width: 200
@@ -30,7 +31,7 @@ blocks:
             _global: integer_format
         - headerName: Revenue
           field: total_revenue
-          width: 100
+          width: 200
           type: numericColumn
           valueFormatter:
             _global: currency_format

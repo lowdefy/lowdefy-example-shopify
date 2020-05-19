@@ -84,8 +84,5 @@
                 - $sup_1
                 - $sup_1
         - 4
-- $match:
-    support_1_2:
-        $gte: 0.1
 - $sort:
     support_1_2: -1

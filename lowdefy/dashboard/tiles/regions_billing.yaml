@@ -9,6 +9,7 @@ blocks:
   - id: table_regions_billing
     type: AgGrid
     properties:
+      theme: basic
       rowData:
         _request: regions_billing
       columnDefs:
@@ -20,19 +21,19 @@ blocks:
           width: 200
         - headerName: Orders
           field: total_orders
-          width: 100
+          width: 150
           type: numericColumn
           valueFormatter:
             _global: integer_format
         - headerName: Revenue
           field: total_revenue
-          width: 100
+          width: 250
           type: numericColumn
           valueFormatter:
             _global: currency_format
         - headerName: Customers
           field: total_customers
-          width: 100
+          width: 150
           type: numericColumn
           valueFormatter:
             _global: integer_format

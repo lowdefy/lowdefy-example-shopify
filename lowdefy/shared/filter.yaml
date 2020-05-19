@@ -1,6 +1,5 @@
 id: card_filter
 type: Card
-properties:
 blocks:
   - id: start_month
     type: MonthSelector
