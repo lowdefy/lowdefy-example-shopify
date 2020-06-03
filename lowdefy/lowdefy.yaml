@@ -167,26 +167,26 @@ menus:
         properties:
           title: Basket Analysis
           Icon: ShoppingOutlined
-      - id: admin_group
-        type: MenuGroup
-        properties:
-          title: Admin
-          Icon: ControlOutlined
-        links:
-          - id: update_orders
-            type: MenuLink
-            pageId: update-orders
-            properties:
-              title: Update Orders
-          - id: update_products
-            type: MenuLink
-            pageId: update-products
-            properties:
-              title: Update Products
+      # - id: admin_group
+      #   type: MenuGroup
+      #   properties:
+      #     title: Admin
+      #     Icon: ControlOutlined
+      #   links:
+      #     - id: update_orders
+      #       type: MenuLink
+      #       pageId: update-orders
+      #       properties:
+      #         title: Update Orders
+      #     - id: update_products
+      #       type: MenuLink
+      #       pageId: update-products
+      #       properties:
+      #         title: Update Products
 pages:
   - _ref: dashboard/dashboard.yaml
   - _ref: customers/customers.yaml
   - _ref: customers/customer.yaml
   - _ref: basket_analysis/basket-analysis.yaml
-  - _ref: api/update-orders.yaml
-  - _ref: api/update-products.yaml
+  # - _ref: api/update-orders.yaml
+  # - _ref: api/update-products.yaml

@@ -1,32 +1,32 @@
 id: card_filter
 type: Card
 blocks:
-  - id: start_month
-    type: MonthSelector
+  - id: start_date
+    type: DateSelector
     style:
       --span: 6
     properties:
-      title: Start Month
+      title: Start Date
       disabledDates:
         min:
-          _state: min_month
+          _state: min_date
         max:
-          _state: max_month
-      label:
-        extra: Show data from to this month (inclusive)
-  - id: end_month
-    type: MonthSelector
+          _state: max_date
+      Label:
+        extra: Show data from this date (inclusive)
+  - id: end_date
+    type: DateSelector
     style:
       --span: 6
     properties:
-      title: End Month
+      title: End Date
       disabledDates:
         min:
-          _state: min_month
+          _state: min_date
         max:
-          _state: max_month
-      label:
-        extra: Show data up to this month (inclusive)
+          _state: max_date
+      Label:
+        extra: Show data up to this date (inclusive)
   - id: reset
     type: Button
     style:

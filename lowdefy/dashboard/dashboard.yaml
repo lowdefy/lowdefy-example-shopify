@@ -26,21 +26,21 @@ actions:
     - id: set_init
       type: setState()
       params:
-        start_month:
+        start_date:
           _date: '2019-03-01'
-        end_month:
+        end_date:
           _get:
-            key: 0.end_month
+            key: 0.end_date
             on:
               _request: init
-        min_month:
+        min_date:
           _get:
-            key: 0.start_month
+            key: 0.start_date
             on:
               _request: init
-        max_month:
+        max_date:
           _get:
-            key: 0.end_month
+            key: 0.end_date
             on:
               _request: init
 

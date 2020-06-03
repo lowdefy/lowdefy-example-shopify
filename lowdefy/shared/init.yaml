@@ -13,7 +13,7 @@ properties:
           $max: $created_at_date
     - $project:
         _id: 0
-        start_month:
+        start_date:
           $dateFromParts:
             year:
               $year:
@@ -21,11 +21,17 @@ properties:
             month:
               $month:
                 $min_created_at
-        end_month:
+            day:
+              $dayOfMonth:
+                $min_created_at
+        end_date:
           $dateFromParts:
             year:
               $year:
                 $max_created_at
             month:
               $month:
+                $max_created_at
+            day:
+              $dayOfMonth:
                 $max_created_at

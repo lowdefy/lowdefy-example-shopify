@@ -7,27 +7,30 @@ properties:
         test: false
         financial_status: paid
     - $addFields:
-        start_month:
-          _state: start_month
-        end_month:
+        start_date:
+          _state: start_date
+        end_date:
           $dateFromParts:
             year:
               $year:
-                _state: end_month
+                _state: end_date
             month:
+              $month:
+                _state: end_date
+            day:
               $add:
-                - $month:
-                    _state: end_month
+                - $dayOfMonth:
+                    _state: end_date
                 - 1
     - $match:
         $expr:
           $and:
             - $gte:
               - $created_at_date
-              - $start_month
+              - $start_date
             - $lt:
               - $created_at_date
-              - $end_month      
+              - $end_date      
     - $group:
         _id:
           bap: $billing_address.province
