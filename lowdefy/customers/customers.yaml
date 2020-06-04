@@ -4,8 +4,7 @@ properties:
   title: Customers
 
 requests:
-  - _ref: customers/requests/orders_per_customer.yaml
-  - _ref: customers/requests/top_customers.yaml
+  - _ref: customers/requests/customer_search_results.yaml
 
 blocks:
   Content:
@@ -14,6 +13,23 @@ blocks:
       style:
         maxWidth: 1300px
       blocks:
+        - _ref: customers/tiles/search.yaml
         - _ref: customers/tiles/top_customers.yaml
-        - _ref: customers/tiles/orders_per_customer.yaml
+        - id: test
+          type: Paragraph
+          properties:
+            content:
+              _stringify:
+                - _if:
+                    test:
+                      _eq:
+                        - _state: search_input
+                        - null
+                    then:
+                      $match: {}
+                    else:
+                      $match:
+                        $text:
+                          $search:
+                            _state: search_input
 

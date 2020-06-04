@@ -1,0 +1,48 @@
+id: search_card
+type: Card
+blocks:
+  - id: search_input
+    type: TextInput
+    style:
+      --span: 8
+      md: 
+        --span: 12
+    properties:
+      title: ""
+      size: large
+      placeholder: Search for a customer by name or email.
+  - id: search_button
+    type: Button
+    style:
+      --span: 2
+      sm: 
+        --span: 7
+      md: 
+        --span: 8
+    properties:
+      title: Search
+      block: true
+      # Icon: SearchOutlined
+      size: large
+    actions:
+      onClick:
+        - id: fetch_all
+          type: fetch()
+  - id: reset_button
+    type: Button
+    style:
+      --span: 2
+      sm: 
+        --span: 5
+      md: 
+        --span: 4
+    properties:
+      title: Reset
+      type: default
+      block: true
+      # Icon: ReloadOutlined
+      size: large
+    actions:
+      onClick:
+        - id: reset
+          type: reset()

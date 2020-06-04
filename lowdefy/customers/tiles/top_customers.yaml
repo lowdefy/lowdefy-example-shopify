@@ -9,13 +9,13 @@ blocks:
   - id: description_top_customers
     type: Paragraph
     properties:
-      content: Top 200 customers by total revenue. Click on the row for a more detailed customer view.
+      content: Top 100 customers matching search query by total revenue. Click on the row for a more detailed customer view.
   - id: table_regions
     type: AgGrid
     properties:
       theme: basic
       rowData:
-        _request: top_customers
+        _request: customer_search_results
       columnDefs:
         - headerName: Name
           field: name

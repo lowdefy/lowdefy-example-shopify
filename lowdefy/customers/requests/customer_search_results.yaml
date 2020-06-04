@@ -1,11 +1,24 @@
-id: top_customers
+id: customer_search_results
 type: MongoDBAggregation
 connectionId: orders_mdb
 properties:
   pipeline:
+    - _if:
+        test:
+          _eq:
+            - _state: search_input
+            - null
+        then:
+          $match: {}
+        else:
+          $match:
+            $text:
+              $search:
+                _state: search_input
     - $match:
         test: false
         financial_status: paid
+
     - $group:
         _id: $email
         first_name:
@@ -19,7 +32,7 @@ properties:
             $toDouble: $subtotal_price
     - $sort:
         total_revenue: -1
-    - $limit: 200
+    - $limit: 100
     - $addFields:
         name:
           $concat:

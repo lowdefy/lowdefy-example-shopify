@@ -1,0 +1,52 @@
+id: top_products
+type: MongoDBAggregation
+connectionId: orders_mdb
+properties:
+  pipeline:
+    - $match:
+        test: false
+        financial_status: paid
+    - $unwind:
+        path: $line_items
+    - $group:
+        _id: $line_items.variant_id
+        count:
+          $sum: 1
+        quantity:
+          $sum: $line_items.quantity
+        name:
+          $first: $line_items.name
+        title:
+          $first: $line_items.title
+        customer_set:
+          $addToSet: $email
+        customers:
+          $push:
+            email: $email
+            name:
+              $concat:
+                - $customer.first_name
+                - ' '
+                - $customer.last_name
+    - $sort:
+        count: -1
+    - $limit: 100
+    - $lookup:
+        from: products
+        localField: _id
+        foreignField: variants.id
+        as: product
+    - $unwind:
+        path: $product
+        preserveNullAndEmptyArrays: true
+    - $addFields:
+        product_type: $product.product_type
+        tags: $product.tags
+        vendor: $product.vendor
+        total_customers:
+          $size: $customer_set
+
+    - $project:
+        _id: 0
+        product: 0
+        customer_set: 0

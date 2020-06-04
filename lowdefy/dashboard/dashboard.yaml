@@ -18,6 +18,7 @@ requests:
   - _ref: dashboard/requests/regions_shipping_billing_country.yaml
   - _ref: dashboard/requests/regions_shipping_billing_province.yaml
   - _ref: dashboard/requests/months.yaml
+  - _ref: dashboard/requests/orders_per_customer.yaml
 actions:
   onInit:
     - id: fetch_init
@@ -67,3 +68,4 @@ blocks:
         - _ref: dashboard/tiles/regions_shipping.yaml
         - _ref: dashboard/tiles/regions_shipping_billing_country.yaml
         - _ref: dashboard/tiles/regions_shipping_billing_province.yaml
+        - _ref: dashboard/tiles/orders_per_customer.yaml

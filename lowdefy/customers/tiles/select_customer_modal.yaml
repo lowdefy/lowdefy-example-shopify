@@ -1,0 +1,43 @@
+id: select_customer_modal
+type: Modal
+visible:
+  _state: select_customer_modal_open
+properties:
+  title: Select A Customer
+  width: 600
+actions:
+  onOk:
+    - id: reset_modal
+      type: setState()
+      params:
+        select_customer_modal_open: false
+        selected_customers: []
+  onCancel:
+    - id: reset_modal
+      type: setState()
+      params:
+        select_customer_modal_open: false
+        selected_customers: []
+blocks:
+  - id: table_select_customer
+    type: AgGrid
+    properties:
+      theme: basic
+      rowData:
+        _state: selected_customers
+      columnDefs:
+        - headerName: Name
+          field: name
+          width: 250
+        - headerName: Email
+          field: email
+          width: 250
+    actions:
+      onRowClick:
+        - id: link
+          type: link()
+          params:
+            pageId: customer
+            input:
+              email:
+                _args: row.email
